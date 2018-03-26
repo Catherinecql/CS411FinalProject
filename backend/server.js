@@ -7,7 +7,7 @@ var express = require('express'),
 var app = express();
 
 var connection = mysql.createConnection({
-	host:'http://databusters.web.engr.illinois.edu',
+	host:'192.17.90.133',
 	user:'databusters_admin',
 	password:'databusters',
 	database:'databusters_db'
@@ -16,8 +16,13 @@ var connection = mysql.createConnection({
 
 connection.connect(function(err){
 	if(err) throw err;
-	
 	console.log("connected to mysql")
+	
+	connection.query("select * from Professor",function (err, result,fields){
+		if(err) throw err;
+		console.log(result)
+	})
+	
 })
 var port = process.env.PORT || 7002
 
