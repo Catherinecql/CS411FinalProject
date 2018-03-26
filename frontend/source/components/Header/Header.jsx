@@ -5,7 +5,16 @@ import './Header.scss';
 
 
 class Header extends Component {
-	
+	constructor(props) {
+        super(props);
+        this.state = {
+            userInfo: null
+        };
+        // this.handleLogout = this.handleLogout.bind(this);
+        // this.handleLogin = this.handleLogin.bind(this);
+        // this.cookies = new Cookies();
+
+    }
 
 	render(){
 
@@ -18,22 +27,12 @@ class Header extends Component {
                     EZPZ Way to Easy
                 </div>
                 <div className="right_menu"><span className="menu_text">Welcome, &nbsp;</span>
-               		{!userInfo?
+               		
                         <span> <span className="menu_text">please</span> <Link className="login_menu menu_item" to="/login"> Login</Link></span>
-                    :
+                   
                         <span> 
                             <Icon name='user circle' /> 
-                            <Dropdown text={username}>
-                                <Dropdown.Menu>
-                                    <Link to="/userCenter" className="drop_item">User Center</Link>
-                                    {permission > 0?
-                                        <Link to="/adminCenter" className="drop_item">Admin Center</Link>
-                                    :
-                                    null
-                                    }
-                                    <Link to="/" onClick={this.handleLogout} className="drop_item">Logout</Link>
-                                </Dropdown.Menu>
-                            </Dropdown>    
+                            
                         </span> 
                     } 
                 </div>

@@ -14,16 +14,26 @@ var connection = mysql.createConnection({
 	//port:'3306'
 })
 
-connection.connect(function(err){
-	if(err) throw err;
-	console.log("connected to mysql")
+// connection.connect(function(err){
+// 	if(err) throw err;
+// 	console.log("connected to mysql")	
 	
-	connection.query("select * from Professor",function (err, result,fields){
+// })
+
+app.get('/everything', function (req, res) {
+	connection.connect(function(err){
 		if(err) throw err;
-		console.log(result)
+		console.log("connected to mysql")	
+		connection.query("select * from Professor",function (error, result,fields){
+			if(error) throw error;
+			console.log(result)
+			res.send(result)
+		})
 	})
 	
 })
+
+
 var port = process.env.PORT || 7002
 
 app.listen(port)
