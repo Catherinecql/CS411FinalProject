@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
-import {Icon, Dropdown} from 'semantic-ui-react';
+import {Icon, Dropdown,Menu} from 'semantic-ui-react';
 import './Header.scss';
 
 
@@ -8,33 +8,61 @@ class Header extends Component {
 	constructor(props) {
         super(props);
         this.state = {
-            userInfo: null
+            activeItem: ''
         };
         // this.handleLogout = this.handleLogout.bind(this);
         // this.handleLogin = this.handleLogin.bind(this);
         // this.cookies = new Cookies();
+        this.handleItemClick = this.handleItemClick.bind(this);
 
     }
 
-	render(){
+    handleItemClick(e, { name }){
+    	this.setState({ activeItem: name })
+    }
 
+	render(){
+		const { activeItem } = this.state
+
+    
 		return(
 			<div className = "Header">
 				<div  className="left_menu">
-					 <Link className="home_menu menu_item" to="/">Home</Link>
+					<Menu>
+				        <Menu.Item
+				          name='EZ Section'
+				          active={activeItem === 'EZ Section'}
+				          onClick={this.handleItemClick}
+				        >
+          					
+	        			</Menu.Item>
+
+				        <Menu.Item
+				          name='Full Schedule Analysis'
+				          active={activeItem === 'Full Schedule Analysis '}
+				          onClick={this.handleItemClick}
+				        >
+				          Full Schedule Analysis
+				        </Menu.Item>
+
+				        <Menu.Item
+				          name='Chat'
+				          active={activeItem === 'Chat'}
+				          onClick={this.handleItemClick}
+				        >
+				          Chat
+				        </Menu.Item>
+     				 </Menu>
 				</div>
+
 				<div className="main_header">
-                    EZPZ Way to Easy
+					<img className="logo" src="../../assets/logo.png" alt="EZPZ Way to Easy"/>
+                    
                 </div>
+
                 <div className="right_menu"><span className="menu_text">Welcome, &nbsp;</span>
                		
                         <span> <span className="menu_text">please</span> <Link className="login_menu menu_item" to="/login"> Login</Link></span>
-                   
-                        <span> 
-                            <Icon name='user circle' /> 
-                            
-                        </span> 
-                    } 
                 </div>
 		    </div>
 
