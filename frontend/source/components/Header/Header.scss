@@ -1,0 +1,82 @@
+$font-family: Calibri, sans-serif;
+.Header{
+    margin:5% 0;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    font-family: $font-family;
+    
+    .menu_item:hover{
+        color:#fd9326 !important;
+    }
+    .menu_item{
+        color:black;
+    }
+    .left_menu{
+        flex:1;
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: flex-start;
+        align-items: center;
+        @media screen and (max-width: 730px){
+            flex-flow: column nowrap;
+            align-items: flex-start;
+        }
+        .home_menu{
+            flex:1;
+            font-weight: 600;
+            font-size: 1.5em;
+        }
+        .about_menu{
+            flex:1;
+            font-weight: 600;
+            font-size: 1.5em;
+        }
+    }
+
+    .main_header{
+       
+        flex:1;
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        font-weight: 700;
+        font-size: 3em;
+        line-height: 1em;
+    }
+    
+    .right_menu{
+        flex:1;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        flex-flow: row nowrap;
+        font-size: 1.5em;
+        font-weight: 400;
+        white-space: nowrap;
+        @media screen and (max-width: 730px){
+            .menu_text{
+                display: none;
+            }
+            align-items: flex-start;
+        }
+        .drop_item{
+            color:black;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            width:120px;
+            height: 40px;
+            padding:0 15%;
+            font-size: 1rem;
+        }
+        .drop_item:hover{
+            background-color: #f4f4f4;
+        }
+        .login_menu{
+            margin-left:1%;
+            color: black;
+            font-weight: 600;
+        }
+    }
+}
