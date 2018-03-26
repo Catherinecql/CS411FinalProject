@@ -4,24 +4,41 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.12/semantic.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:400,600,700" rel="stylesheet">
+    <script src="https://use.fontawesome.com/3dda5a2c3a.js"></script>
+    <script>
+        (function( w ){
+            var loadJS = function( src, cb ){
+                "use strict";
+                var ref = w.document.getElementsByTagName( "script" )[ 0 ];
+                var script = w.document.createElement( "script" );
+                script.src = src;
+                script.async = true;
+                ref.parentNode.insertBefore( script, ref );
+                if (cb && typeof(cb) === "function") {
+                    script.onload = cb;
+                }
+                return script;
+            };
+            // commonjs
+            if( typeof module !== "undefined" ){
+                module.exports = loadJS;
+            }
+            else {
+                w.loadJS = loadJS;
+            }
+        }( typeof global !== "undefined" ? global : this ));
+    </script>
     <title>
         CS 411
     </title>
 </head>
 
 <body>
-<!--
-    You should NOT be writing any more content in <body>.
-    All content should be written in React components, which will be rendered into '#app' for you by React.
 
-    However, feel free to add a favicon and a page title here, if you want.
- -->
 <div id="app" />
 
-<!--
-    You do not need to add any more scripts here.
-    Also don't delete either of these includes unless you want bad things happening.
- -->
 <script src="vendor.bundle.js" type="text/javascript"></script>
 <script src="bundle.js" type="text/javascript"></script>
 
