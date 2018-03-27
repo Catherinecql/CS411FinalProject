@@ -34,7 +34,7 @@ class Header extends Component {
 				          active={activeItem === 'EZ Section'}
 				          onClick={this.handleItemClick}
 				        >
-          					
+          					<Link to="/EZSection">EZ Section</Link>
 	        			</Menu.Item>
 
 				        <Menu.Item
@@ -42,7 +42,7 @@ class Header extends Component {
 				          active={activeItem === 'Full Schedule Analysis '}
 				          onClick={this.handleItemClick}
 				        >
-				          Full Schedule Analysis
+				          <Link to="/FullScheduleAnalysis">Full Schedule Analysis</Link>
 				        </Menu.Item>
 
 				        <Menu.Item
@@ -56,7 +56,7 @@ class Header extends Component {
 				</div>
 
 				<div className="main_header">
-					<img className="logo" src="../../assets/logo.png" alt="EZPZ Way to Easy"/>
+					<img className="logo"src="../../assets/logo.png" alt="EZPZ Way to Easy"/>
                     
                 </div>
 

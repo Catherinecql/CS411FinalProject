@@ -6,6 +6,8 @@ import 'semantic-ui-css/semantic.min.css';
 // Include your new Components here
 import {Container} from 'semantic-ui-react';
 import Header from './components/Header/Header.jsx'
+import EZSection from './components/EZSection/EZSection.jsx';
+import FullScheduleAnalysis from './components/FullScheduleAnalysis/FullScheduleAnalysis.jsx';
 import Home from './components/Home/Home.jsx';
 
 // Include any new stylesheets here
@@ -21,6 +23,8 @@ class APP extends Component{
 				<div>
 					<Container>
 						<Header/> 
+						<Route exact path="/EZSection" component={EZSection}/>
+						<Route exact path="/FullScheduleAnalysis" component={FullScheduleAnalysis}/>
 						<Route exact path="/" component={Home}/>
 					</Container>
 				</div>
