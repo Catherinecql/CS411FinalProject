@@ -90,16 +90,16 @@ app.delete('/deleteuser', (req, res) => {
 	})
 });
 
-// 3. Update courses, major, and graduation semester (Save button)
-app.put('/updateuser', (req, res) => {
+// 3. Update major and graduation semester (Save button 1)
+app.put('/updatemajgradsem', (req, res) => {
 	var username = req.body.username;
 	var courses_taken = req.body.courses_taken;
 	var major = req.body.major;
 	var grad_sem = req.body.grad_sem;
-	var sql = "UPDATE User SET courses_taken = '" + courses_taken + "', major = '" + major + "', grad_sem = '" + grad_sem + "' WHERE username = '" + username + "';";
+	var sql = "UPDATE User SET major = '" + major + "', grad_sem = '" + grad_sem + "' WHERE username = '" + username + "';";
 	connection.query(sql, function(error,result,fields){
 		if(error) {
-			var err_message = "Error: updateuser";
+			var err_message = "Error: updatemajgradsem";
 			res.status(403).send(err_message);
 		}
 		console.log(result)
@@ -107,6 +107,20 @@ app.put('/updateuser', (req, res) => {
 	})
 });
 
+// 3.2 Update courses (Save button 2)
+app.put('/updatecourses', (req, res) => {
+	var username = req.body.username;
+	var courses_taken = req.body.courses_taken;
+	var sql = "UPDATE User SET courses_taken = '" + courses_taken + "' WHERE username = '" + username + "';";
+	connection.query(sql, function(error,result,fields){
+		if(error) {
+			var err_message = "Error: updatecourses";
+			res.status(403).send(err_message);
+		}
+		console.log(result)
+		res.send(result)
+	})
+});
 
 // 4. Show classes the user’s has taken
 app.get('/gettakenclasses/:username', function (req, res) {
@@ -155,10 +169,6 @@ app.delete('/deleteelective', (req, res) => {
 		res.send(result)
 	})
 });
-
-
-
-
 
 
 var port = process.env.PORT || 7002
