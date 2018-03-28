@@ -132,7 +132,7 @@ app.get('/gettakenclasses/:username', function (req, res) {
 			var err_message = "Error: gettakenclasses/" + username;
 			res.status(403).send(err_message);
 		}
-		console.log(result)
+		result = '[' + result[0].courses_taken + ']';
 		res.send(result)
 	})
 });
@@ -243,6 +243,43 @@ app.get('/getAllProfessors/:course_department/:course_number', function (req, re
 	})
 });
 
+
+// 7. Get next semester's professors, their GPA and RMP link for a course
+app.get('/getNextSemProfessors/:course_department/:course_number', function (req, res) {
+	var course_department = req.params.course_department;
+	var course_number = req.params.course_number;
+
+	var sql_select = "select Professor.name_format1, AVG(CourseHistory.gpa), RMPProfile.rmp_link ";
+	var sql_from = "FROM CourseHistory, Professor, RMPProfile ";
+
+	var sql_where = "WHERE CourseHistory.course_department = '"+course_department+"'";
+	var sql_where1 = " AND CourseHistory.course_number = '"+course_number+"'";
+	var sql_where2 = " AND CourseHistory.professor_name_format2 = Professor.name_format2";
+	var sql_where3 = " AND RMPProfile.professor_name_format1 = Professor.name_format1 ";
+
+	var sql_where5 = "WHERE course_department = '"+course_department+"'";
+	var sql_where6 = " AND course_number = '"+course_number+"'";
+
+	var sql_where4 = " AND Professor.netid IN (SELECT netid  FROM Offering " + sql_where5 + sql_where6 + ") ";
+
+	var sql_groupby = " GROUP BY CourseHistory.professor_name_format2";
+
+	var sql_query = sql_select + sql_from + sql_where + sql_where1 + sql_where2 + sql_where3 + sql_where4 + sql_groupby;
+
+	console.log(sql_query);
+	connection.query(sql_query,function (error, result,fields){
+		if(error) {
+			var err_message = "Error: getNextSemProfessors/" + course_department + course_number;
+			res.status(403).send(err_message);
+		}
+		if(result.length == 0) {
+			var err_message = "Error: No records found for past section of this course.";
+			res.status(403).send(err_message);
+		}
+		console.log(result)
+		res.send(result)
+	})
+});
 
 
 var port = process.env.PORT || 7002
