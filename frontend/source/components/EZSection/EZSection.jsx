@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Button,Container,Grid,Menu,Dropdown } from 'semantic-ui-react'
-import { Link } from 'react-router-dom'
+import {BrowserRouter as Router, Route, Link,browserHistory,Redirect} from 'react-router-dom';
 import ReactDOM from 'react-dom'
 import _ from 'lodash'
 import styles from './EZSection.scss'
@@ -58,7 +58,7 @@ class EZSection extends Component {
 
 	searchClickHandler(event){
 
-		console.log("searchClickHandler-- event")
+		// console.log("searchClickHandler-- event")
 		// let entity = this.state.searchEntity;
 
 		// let current_url = this.baseUrl + "search/" + entity;
@@ -130,6 +130,7 @@ class EZSection extends Component {
 		this.setState({ searchbyItem: name })
 	}
     render() {
+    	// console.log(this.props.location)
     	const { 
    			searchbyItem,
    			multiple, options, isFetching, search, value
