@@ -43,7 +43,7 @@ app.post('/login', (req, res) => {
 			var err_message = "Error: Login";
 			res.status(403).send(err_message);
 		}
-		if(result.length == 0) {
+		else if(result.length == 0) {
 			var err_message = "Error: Login failed: User not registered.";
 			res.status(403).send(err_message);
 		}
@@ -66,13 +66,14 @@ app.post('/adduser', (req, res) => {
 	var sql = "insert into User(username,password,email,grad_sem,major,courses_taken) values ('" + username + "','" + password + "','" + email + "','', '', '')";
 	console.log(sql);
 	connection.query(sql, function(error,result,fields){
-		// console.log(error)
 		if(error) {
 			var err_message = "Error: ER_DUP_ENTRY: Duplicate entry '" + username + "' for key 'PRIMARY'";
 			res.status(403).send(err_message);
 		}
-		console.log(result)
-		res.send(result)
+		else {
+			console.log(result)
+			res.send(result)
+		}
 	})
 });
 
@@ -86,8 +87,10 @@ app.delete('/deleteuser', (req, res) => {
 			var err_message = "Error: deleteuser";
 			res.status(403).send(err_message);
 		}
-		console.log(result)
-		res.send(result)
+		else {
+			console.log(result)
+			res.send(result)
+		}
 	})
 });
 
@@ -103,8 +106,10 @@ app.put('/updatemajgradsem', (req, res) => {
 			var err_message = "Error: updatemajgradsem";
 			res.status(403).send(err_message);
 		}
-		console.log(result)
-		res.send(result)
+		else {
+			console.log(result)
+			res.send(result)
+		}
 	})
 });
 
@@ -118,8 +123,10 @@ app.put('/updatecourses', (req, res) => {
 			var err_message = "Error: updatecourses";
 			res.status(403).send(err_message);
 		}
-		console.log(result)
-		res.send(result)
+		else {
+			console.log(result)
+			res.send(result)
+		}
 	})
 });
 
@@ -132,8 +139,10 @@ app.get('/gettakenclasses/:username', function (req, res) {
 			var err_message = "Error: gettakenclasses/" + username;
 			res.status(403).send(err_message);
 		}
-		result = '[' + result[0].courses_taken + ']';
-		res.send(result)
+		else {
+			var result1 = '[' + result[0].courses_taken + ']';
+			res.send(result1);
+		}
 	})
 });
 
@@ -147,7 +156,7 @@ app.get('/gettakenelectives/:username', function (req, res) {
 			var err_message = "Error: gettakenelectives/" + username;
 			res.status(403).send(err_message);
 		}
-		if(result.length==0) {
+		else if(result.length==0) {
 			var err_message = "Error: User not found:" + username;
 			res.status(403).send(err_message);
 		}
@@ -169,8 +178,10 @@ app.post('/addelective', (req, res) => {
 			var err_message = "Error: ER_DUP_ENTRY: Duplicate entries '" + username + "' and '" + elective_course + "' for key 'PRIMARY'";
 			res.status(403).send(err_message);
 		}
-		console.log(result)
-		res.send(result)
+		else {
+			console.log(result)
+			res.send(result)
+		}
 	})
 });
 
@@ -186,8 +197,10 @@ app.delete('/deleteelective', (req, res) => {
 			var err_message = "Error: deleteelective";
 			res.status(403).send(err_message);
 		}
-		console.log(result)
-		res.send(result)
+		else {
+			console.log(result)
+			res.send(result)
+		}
 	})
 });
 
@@ -201,7 +214,7 @@ app.get('/getstudentinfo/:username', function (req, res) {
 			var err_message = "Error: getstudentinfo/" + username;
 			res.status(403).send(err_message);
 		}
-		if(result.length==0) {
+		else if(result.length==0) {
 			var err_message = "Error: User not found:" + username;
 			res.status(403).send(err_message);
 		}
@@ -238,8 +251,10 @@ app.get('/getAllProfessors/:course_department/:course_number', function (req, re
 			var err_message = "Error: getAllProfessors/" + course_department + course_number;
 			res.status(403).send(err_message);
 		}
-		console.log(result)
-		res.send(result)
+		else {
+			console.log(result)
+			res.send(result)
+		}
 	})
 });
 
@@ -271,13 +286,14 @@ app.get('/getNextSemProfessors/:course_department/:course_number', function (req
 		if(error) {
 			var err_message = "Error: getNextSemProfessors/" + course_department + course_number;
 			res.status(403).send(err_message);
-		}
-		if(result.length == 0) {
+		} else if(result.length == 0) {
 			var err_message = "Error: No records found for past section of this course.";
 			res.status(403).send(err_message);
 		}
-		console.log(result)
-		res.send(result)
+		else {
+			console.log(result)
+			res.send(result)
+		}
 	})
 });
 
