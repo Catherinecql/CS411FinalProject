@@ -72,6 +72,35 @@ app.get('/gettakenclasses/:username', function (req, res) {
 });
 
 
+// 5. Add a new elective
+app.post('/addelective', (req, res) => {
+		var username = req.body.username;
+		var elective_course = req.body.elective_course;
+		var sql = "insert into takes(username,elective_course) values ('" + username + "','" + elective_course + "')";
+		console.log(sql);
+		connection.query(sql, function(error,result,fields){
+			if(error){
+				res.status(403).send("Elective already added");
+			}
+			console.log(result)
+			res.send(result)
+	})
+});
+
+
+// 2. Delete an elective
+app.delete('/deleteelective', (req, res) => {
+		var elective_course = req.body.elective_course;
+		var username = req.body.username;
+		var sql = "delete from takes WHERE username = '" + username + "' AND elective_course = '" + elective_course + "';";
+		console.log(sql);
+		connection.query(sql, function(error,result,fields){
+			if(error) throw error;
+			console.log(result)
+			res.send(result)
+	})
+});
+
 var port = process.env.PORT || 7002
 
 app.listen(port)

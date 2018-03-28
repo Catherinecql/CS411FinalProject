@@ -30,3 +30,17 @@ api documentation
         	"courses_taken": "CS210, CS374"
     	}
 	]
+
+5. Add an elective
+	Post http://http://localhost:7002/addelective
+	request: {
+		"username" : "bob75",
+		"elective_course": "CS411"
+	}
+
+6. Delete an elective
+	Delete http://localhost:7002/deleteelective
+	request: {
+		"username" : "bob75",
+		"elective_course": "CS411"
+	}
