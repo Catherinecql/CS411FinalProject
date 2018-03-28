@@ -69,16 +69,34 @@ class Personalized extends Component {
     	const username = userInfo?userInfo.username:null;
 
     	let majorInfoUrl = this.baseUrl  + '/getstudentinfo/' + username
-    	console.log(majorInfoUrl)
+    	// console.log(majorInfoUrl)
         // console.log("code here")
-         axios.get(majorInfoUrl)
+        axios.get(majorInfoUrl)
 	        .then((res) =>{
-	            console.log(res)
+	            // console.log(res.data[0])
+	            let data = res.data[0]
+	            let major = data.major
+	            let grad_sem = data.grad_sem
+	            this.setState({
+	            	major: major,
+	            	grad_sem: grad_sem
+
+	            })
 	        })
 	        .catch( (error) =>{
 	        	console.log(error)
 	        })
 
+	    let requriedInfoUrl = this.baseUrl + '/gettakenclasses/' + username
+	    console.log(requriedInfoUrl)
+	    axios.get(requriedInfoUrl)
+	    	.then((res) => {
+	    		let requriedCourseTaken = res.data[0]
+	    		console.log(requriedCourseTaken)
+	    	})
+	    	.catch((error)=>{
+	    		console.log(error)
+	    	})
 
 
             // const pendingAccounts = res.data;
@@ -134,7 +152,7 @@ class Personalized extends Component {
 
 	    axios.delete(url, {data:userAuthInfo}) 
 	        .then((response)=>{
-	            console.log(response);
+	            // console.log(response);
 	            this.handleLogout();
 
 	        })
@@ -173,52 +191,63 @@ class Personalized extends Component {
 
 	saveClickHandle(){
 		const{major,grad_sem} = this.state
-         const userInfo = this.cookies.get('userInfo')||null;
-         // console.log(userInfo)
-         // let username  = userInfo.username;
+     	const userInfo = this.cookies.get('userInfo')||null;
+	    // console.log(userInfo)
+	    // let username  = userInfo.username;
 
-         // const {username,email} = this.state;
-         let url = this.baseUrl+ '/updatemajgradsem ';
-         // console.log(url)
-         let newUserInfo = {}
-         newUserInfo["username"] =  userInfo.username;
-         newUserInfo["major"] = major;
-         newUserInfo["grad_sem"] = grad_sem;
+	    // const {username,email} = this.state;
+	    let url = this.baseUrl+ '/updatemajgradsem ';
+	    // console.log(url)
+	    let newUserInfo = {}
+	    newUserInfo["username"] =  userInfo.username;
+	    newUserInfo["major"] = major;
+	    newUserInfo["grad_sem"] = grad_sem;
          // console.log(data)
-            axios.put(url,newUserInfo)
-                .then((res)=>{
-                    console.log(res)
-                    // let data = res.data.data
-                    // if(data){
-                    //     console.log("debugging")
-                    //     this.cookies.remove('userInfo', { path: '/' });
-                    //     this.cookies.set('userInfo', res.data.data, { path: '/' });
-                    //     this.props.loginHandler(data);
+        axios.put(url,newUserInfo)
+            .then((res)=>{
+                // console.log(res)
+                // let data = res.data.data
+                // if(data){
+                //     console.log("debugging")
+                //     this.cookies.remove('userInfo', { path: '/' });
+                //     this.cookies.set('userInfo', res.data.data, { path: '/' });
+                //     this.props.loginHandler(data);
 
-                    // }
-                   
-                    this.setState({
-                        edit:false
-                    })
-                    
-                    // // setTimeout(this.closeModal(),1000)
-                    // // this.closeModal()
+                // }
+               
+                this.setState({
+                    edit:false
                 })
-                .catch((err)=>{
-                    console.log(err)
-                    // this.setState({
-                    //     confirmPasswordError: err
-                    // })
-                })
+                
+                // // setTimeout(this.closeModal(),1000)
+                // // this.closeModal()
+            })
+            .catch((err)=>{
+                console.log(err)
+                // this.setState({
+                //     confirmPasswordError: err
+                // })
+            })
+
+
 
 
     }
 
-    cancelClickHandle(){
+    cancelClickHandle(e,value){
         const {edit} = this.state;
-        this.setState({
-            edit:false
-        })
+        
+        if(value.value == 1){
+    		// console.log("edit basic info")
+    		this.setState({
+            	edit:false
+       	 	})
+    	}else{
+    		// console.log("edit requried courses")
+    		this.setState({
+            	editRequired:false
+       	 	})
+    	}
     }
     editClickHandle(e,value){
     	
@@ -254,7 +283,7 @@ class Personalized extends Component {
         const editHideRequired = editRequired? "none":"";
 
 
-        console.log(requiredCourse);
+        // console.log(requiredCourse);
 
         // requiredCourse.map((label,j)=>{
         // 	console.log(label)
@@ -269,7 +298,7 @@ class Personalized extends Component {
                         <Grid.Column className="userColumn">
                             <div className="major row">
                                       <span className="title">Major:&nbsp;</span>
-                                      <span className="text" style={{display:editHide}}></span>
+                                      <span className="text" style={{display:editHide}}>{major}</span>
                                       <Input name="major" value={major} style={{display:editDisplay}} onChange={this.handleChange}></Input>
                             </div>
                         </Grid.Column>
@@ -277,7 +306,7 @@ class Personalized extends Component {
                   
                             <div className="grad_sem row">
                                   <span className="title">grad_sem:&nbsp; </span>
-                                  <span className="text" style={{display:editHide}}></span>
+                                  <span className="text" style={{display:editHide}}>{grad_sem}</span>
                                   <Input name="grad_sem" value={grad_sem} style={{display:editDisplay}} onChange={this.handleChange}></Input>
                             </div>
 
@@ -286,8 +315,8 @@ class Personalized extends Component {
                     </Grid.Row>
                 </Grid>
                     <div className="buttons">
-                        <Button negative style={{display:editDisplay}} onClick={this.cancelClickHandle}>Cancel</Button>
-                        <Button positive style={{display:editDisplay}} onClick={this.saveClickHandle}>Save</Button>
+                        <Button negative value = '1' style={{display:editDisplay}} onClick={this.cancelClickHandle}>Cancel</Button>
+                        <Button positive value = '1' style={{display:editDisplay}} onClick={this.saveClickHandle}>Save</Button>
                         <Button primary  value = '1' style={{display:editHide}} onClick={this.editClickHandle}>Edit</Button>
                     </div>
             </div>    
@@ -304,6 +333,7 @@ class Personalized extends Component {
                                 		// active={this.state.active[i][j]} 
                                 		// onClick={this.LabelClickHandler.bind(this,i,j)
                                 		color = "orange"
+                                		disabled={!editRequired}
                                     // color={this.state.active[i][j] ? "orange" : null}
                                     >
                                 {label.title}
@@ -312,8 +342,8 @@ class Personalized extends Component {
                     </div>
                  </div>
                  <div className="buttons">
-                    <Button negative style={{display:editDisplayRequired}} onClick={this.cancelClickHandle}>Cancel</Button>
-                    <Button positive style={{display:editDisplayRequired}} onClick={this.saveClickHandle}>Save</Button>
+                    <Button negative value = '2'style={{display:editDisplayRequired}} onClick={this.cancelClickHandle}>Cancel</Button>
+                    <Button positive value = '2' style={{display:editDisplayRequired}} onClick={this.saveClickHandle}>Save</Button>
                     <Button primary  value = '2' style={{display:editHideRequired}} onClick={this.editClickHandle}>Edit</Button>
                 </div>
     		</div>
