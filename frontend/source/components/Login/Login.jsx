@@ -23,7 +23,7 @@ class Login extends Component {
             login:false,     
         };
 
-        this.baseUrl = 'http://104.236.255.229:5171/';
+        // this.baseUrl = 'http://104.236.255.229:5171/';
         // this.baseUrl = 'http://localhost:5171/';
         this.handleChangeUsername = this.handleChangeUsername.bind(this);
         this.handleChangePassword = this.handleChangePassword.bind(this);
@@ -76,33 +76,39 @@ class Login extends Component {
             let userAuthInfo = {};
             userAuthInfo["username"] = username;
             userAuthInfo["password"] = password;
-            axios.post(url, userAuthInfo) 
-                .then((response)=>{
-                    //  console.log(response);
-                     let data = response.data.data;
-                     // console.log("data",data)
-                     if(data){
-                        console.log("successfully login with ", data.username);
-                        this.cookies.set('userInfo', data, { path: '/' });
-                        this.props.loginHandler(data);
-                        this.setState({
-                            login:true
-                        })
-                     }
-                })
-                .catch( (error) => {
-                    let {errorType} = error.response.data;
-                    console.log(errorType);
-                    if(errorType === 0){
-                        this.setState({
-                            usernameError: "Couldn't find your Leam account"
-                        })
-                    }else if(errorType === 1){
-                        this.setState({
-                            passwordError: "Password incorrect"
-                        })
-                    }
-                });
+            console.log("user userAuthInfo",userAuthInfo)
+            this.cookies.set('userInfo', userAuthInfo, { path: '/' });
+            this.props.loginHandler(userAuthInfo);
+            this.setState({
+                login:true
+            })
+            // axios.post(url, userAuthInfo) 
+            //     .then((response)=>{
+            //         //  console.log(response);
+            //          let data = response.data.data;
+            //          // console.log("data",data)
+            //          if(data){
+            //             console.log("successfully login with ", data.username);
+            //             this.cookies.set('userInfo', data, { path: '/' });
+            //             this.props.loginHandler(data);
+            //             this.setState({
+            //                 login:true
+            //             })
+            //          }
+            //     })
+            //     .catch( (error) => {
+            //         let {errorType} = error.response.data;
+            //         console.log(errorType);
+            //         if(errorType === 0){
+            //             this.setState({
+            //                 usernameError: "Couldn't find your Leam account"
+            //             })
+            //         }else if(errorType === 1){
+            //             this.setState({
+            //                 passwordError: "Password incorrect"
+            //             })
+            //         }
+            //     });
         }
     }
 
@@ -140,7 +146,7 @@ class Login extends Component {
         )
 
         if(login){
-            return(<Redirect to={{pathname:'/', state:{loggedIn: true}}}  push />)
+            return(<Redirect to={{pathname:'/Ezsection', state:{loggedIn: true}}}  push />)
         }
 
         return(
@@ -151,9 +157,7 @@ class Login extends Component {
                         {loginInputField}
                         <Button className = 'btnlogin' onClick={this.handleSubmit}>Login</Button>
                     </div>
-                    <div  className="field loginText"> Contact us to 
-                        <span className="addBold"> Register </span>
-                    </div>
+                    
                     <div  className="field loginText">Forgot
                         <span className="addBold"> Username </span>
                         or

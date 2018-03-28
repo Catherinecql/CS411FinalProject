@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {Icon, Dropdown,Menu} from 'semantic-ui-react';
 import './Header.scss';
+import Cookies from 'universal-cookie';
 
 
 class Header extends Component {
@@ -10,11 +11,47 @@ class Header extends Component {
         this.state = {
             activeItem: ''
         };
-        // this.handleLogout = this.handleLogout.bind(this);
-        // this.handleLogin = this.handleLogin.bind(this);
-        // this.cookies = new Cookies();
+  
+        this.handleLogin = this.handleLogin.bind(this);
+        this.handleLogout = this.handleLogout.bind(this);
         this.handleItemClick = this.handleItemClick.bind(this);
+        this.cookies = new Cookies();
+    }
+    componentWillMount() {
+        // console.log("componentWillMount")
+        this.handleLogin();
+    }
 
+    componentWillReceiveProps(nextProps){
+        console.log("componentWillReceiveProps")
+        this.handleLogin();
+        if(JSON.stringify(nextProps) != JSON.stringify(this.props)){
+            if(nextProps.userInfo){
+                this.setState({
+                    userInfo:nextProps.userInfo
+                })
+            }else{
+                this.setState({
+                    userInfo:null
+                })
+            }
+        }
+      
+    }
+
+    handleLogin() {
+        const userInfo = this.cookies.get('userInfo')||null
+        // console.log("handleLogin",userInfo)
+        this.setState({ userInfo: userInfo });
+    }
+
+    handleLogout(){
+    	console.log("handleLogout")
+        this.cookies.remove('userInfo', { path: '/' });
+        this.setState({ userInfo: null });
+        this.setState({
+            redirectPath:"/"
+        })
     }
 
     handleItemClick(e, { name }){
@@ -22,8 +59,10 @@ class Header extends Component {
     }
 
 	render(){
-		const { activeItem } = this.state
-
+		const { activeItem,userInfo } = this.state
+		console.log(this.props)
+		
+        const username = userInfo?userInfo.username:null;
     
 		return(
 			<div className = "Header">
@@ -62,7 +101,20 @@ class Header extends Component {
 
                 <div className="right_menu"><span className="menu_text">Welcome, &nbsp;</span>
                		
+                    {!userInfo?
                         <span> <span className="menu_text">please</span> <Link className="login_menu menu_item" to="/login"> Login</Link></span>
+                    :
+                        <span> 
+                            <Icon name='user circle' /> 
+                            <Dropdown text={username}>
+                                <Dropdown.Menu>
+                                    
+                                    <Link to="/Personalized" className="drop_item">Personalized Page</Link>
+                               		<Link to="/" onClick={this.handleLogout} className="drop_item">Logout</Link>
+                                </Dropdown.Menu>
+                            </Dropdown>    
+                        </span> 
+                    }
                 </div>
 		    </div>
 
