@@ -32,11 +32,7 @@ api documentation
 
 4. Show core classes the user’s has taken
 	Get http://localhost:7002/gettakenclasses/bob75
-	res: [
-    	{
-        	"courses_taken": "CS210, CS374"
-    	}
-	]
+	res: [CS210, CS374, CS173]
 
 4. Show electives the user’s has taken
 	Get http://localhost:7002/gettakenelectives/bob75
