@@ -172,7 +172,7 @@ class EZSection extends Component {
 			           	options={options}
 			           	multiple={multiple}
 			            value={value}
-			            placeholder='Ad'
+			            placeholder='Select Course'
 			            onChange={this.handleChange}
 			            onSearchChange={this.handleSearchChange}
 			            disabled={isFetching}
