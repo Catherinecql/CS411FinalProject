@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {Header,Menu,Container,Segment,Card,Button,Icon,Input,Form, Message} from 'semantic-ui-react';
-import { Link } from 'react-router-dom'
-
+import {BrowserRouter as Router, Route, Link,browserHistory,Redirect} from 'react-router-dom';
+import axios from 'axios';
 import styles from './Home.scss'
 
 class Home extends Component {
@@ -15,22 +15,26 @@ class Home extends Component {
             username:'',
             email:'',
             open:false,
+            emailError:'',
+            usernameError: '',
             oldPasswordError:'',
             newPasswordError:'',
             confirmPasswordError:'',
             successMessage:'',
-            submit:false
+            submit:false,
+            register:false
         }
 		this.handleChange = this.handleChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleLogin = this.handleLogin.bind(this);
+		this.baseUrl = 'http://localhost:7002'
 	}
 
 	handleChange(event,{name,value}){
         // console.log(event)
         // console.log(event.value);
-        console.log("value",value)
-        console.log("name",[name])
+        // console.log("value",value)
+        // console.log("name",[name])
         this.setState({ [name]: value })
         
     }  
@@ -44,8 +48,9 @@ class Home extends Component {
     handleLogin() {
         const{usernameError,passwordError,username,password,confirmPwd,email} = this.state;
         this.setState({
-            oldPasswordError: '',
-            newPasswordError: '',
+        	usernameError:'',
+            passwordError: '', 
+            emailError: '',
             confirmPasswordError:'',
             successMessage:''
         });
@@ -54,6 +59,10 @@ class Home extends Component {
 
         if (!username) {
             this.setState({ usernameError: 'Must have username' });
+            flag = false;
+        }
+        if (!email) {
+            this.setState({ emailError: 'Must have Email' });
             flag = false;
         }
         if (!password) {
@@ -68,45 +77,56 @@ class Home extends Component {
 
         if (flag) {
 
-            // let url = this.baseUrl+ 'users/login';
+            let url = this.baseUrl+ '/adduser';
             let userAuthInfo = {};
             userAuthInfo["username"] = username;
-            userAuthInfo["email"] = email;
+            userAuthInfo["email"] = email+'@illinois.edu';
             userAuthInfo["password"] = password;
-            userAuthInfo["confirmPwd"] = confirmPwd;
-            console.log(userAuthInfo)
-            // axios.post(url, userAuthInfo) 
-            //     .then((response)=>{
-            //         //  console.log(response);
-            //          let data = response.data.data;
-            //          // console.log("data",data)
-            //          if(data){
-            //             console.log("successfully login with ", data.username);
-            //             this.cookies.set('userInfo', data, { path: '/' });
-            //             this.props.loginHandler(data);
-            //             this.setState({
-            //                 login:true
-            //             })
-            //          }
-            //     })
-            //     .catch( (error) => {
-            //         let {errorType} = error.response.data;
-            //         console.log(errorType);
-            //         if(errorType === 0){
-            //             this.setState({
-            //                 usernameError: "Couldn't find your Leam account"
-            //             })
-            //         }else if(errorType === 1){
-            //             this.setState({
-            //                 passwordError: "Password incorrect"
-            //             })
-            //         }
-            //     });
+            // userAuthInfo["confirmPwd"] = confirmPwd;
+            // console.log(userAuthInfo)
+            axios.post(url, userAuthInfo) 
+                .then((response)=>{
+                     console.log(response);
+                     // let data = response;
+                     // console.log("data",data)
+                     // if(data){
+                     //    console.log("successfully register with ", data.username);
+                     //    // this.cookies.set('userInfo', data, { path: '/' });
+                     //    // this.props.loginHandler(data);
+                        this.setState({
+                            register:true
+                        })
+                     // }
+                })
+                .catch( (error) => {
+                    // let {errorType} = error.response.data;
+                    console.log(error);
+                    // if(errorType === 0){
+                    //     this.setState({
+                    //         usernameError: "Couldn't find your Leam account"
+                    //     })
+                    // }else if(errorType === 1){
+                    //     this.setState({
+                    //         passwordError: "Password incorrect"
+                    //     })
+                    // }
+                });
         }
     }
 
     render() {
-    	const{username,password,usernameError,passwordError,errorMessage,input,login,confirmPwd,confirmPasswordError,email} = this.state;
+    	const{username,
+    		  password,
+    		  usernameError,
+    		  emailError,
+    		  passwordError,
+    		  errorMessage,
+    		  input,
+    		  login,
+    		  confirmPwd,
+    		  confirmPasswordError,
+    		  email,
+    		  register} = this.state;
     	let registerInputField =(
             <div>
                 <Input  className="inputLogin"  
@@ -131,11 +151,11 @@ class Home extends Component {
                         label={{ basic: true, content: '@illinois.edu' }}
     					labelPosition='right'
                         onChange={this.handleChange} />
-                {usernameError ?(
+                {emailError ?(
                     <div className="ui error message">
                         <div className="content">  
                             <div className="header">Action Forbidden</div>
-                            <p>{usernameError}</p>
+                            <p>{emailError}</p>
                         </div>
                     </div>)
                 :null}
@@ -169,6 +189,10 @@ class Home extends Component {
             </div>
         )
 
+    	if(register){
+            return(<Redirect to={{pathname:'/Login'
+        }}  push />)
+        }
         return(
             <div className="Home">
 	            <Segment className="Register">
