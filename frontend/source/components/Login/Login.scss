@@ -1,0 +1,35 @@
+.Login{
+	margin:20% !important;
+	@media screen and (max-width: 730px){
+		margin:5% !important;
+	}
+	.form{
+		padding:5%;
+	}
+
+	.loginHeader{
+		text-align: center;
+	}
+
+	.inputLogin{
+		margin:10px 0 10px 0  !important;
+	}
+
+	.error{
+		margin:0px;
+	}
+	.btnlogin{
+		float: right;
+		font-size:1.2em;
+		margin-bottom: 30px;
+	}
+
+	.loginText{
+		font-size:1.1em;
+		margin:10px 0 10px 0  !important;
+		.addBold{
+			font-weight: 600;
+		}
+	}
+
+}
