@@ -4,6 +4,7 @@ import {BrowserRouter as Router, Route, Link,browserHistory,Redirect} from 'reac
 import axios from 'axios'
 import styles from './Personalized.scss'
 import Cookies from 'universal-cookie';
+import requiredCourse from "./requiredCourse.js"
 
 class Personalized extends Component {
 	constructor(props){
@@ -12,7 +13,11 @@ class Personalized extends Component {
 			username: '',
 			major:'',
 			grad_sem:'',
-			edit:false
+			edit:false,
+			editRequired: false,
+			active:[],
+			requiredCourse:[]
+
 		}
 		this.handleClickDelete = this.handleClickDelete.bind(this)
 		this.cookies = new Cookies();
@@ -56,14 +61,30 @@ class Personalized extends Component {
 
 
     updateNew(){
+    	const requiredCourses = _.filter(requiredCourse);
+    	this.setState({
+    		requiredCourse:requiredCourses
+    	})
+    	const userInfo = this.cookies.get('userInfo')||null
+    	const username = userInfo?userInfo.username:null;
+
+    	let majorInfoUrl = this.baseUrl  + '/getstudentinfo/' + username
+    	console.log(majorInfoUrl)
         // console.log("code here")
-        //  axios.get("http://138.197.103.148:5000/getpending")
-        // .then((res)=>{
-        //     // console.log(res.data)
-        //     const pendingAccounts = res.data;
-        //     const addLabels = _.filter(addLabel);
-        //     let activeArr = [];
-        //     let profileLabels = [];
+         axios.get(majorInfoUrl)
+	        .then((res) =>{
+	            console.log(res)
+	        })
+	        .catch( (error) =>{
+	        	console.log(error)
+	        })
+
+
+
+            // const pendingAccounts = res.data;
+            // const addLabels = _.filter(addLabel);
+            // let activeArr = [];
+            // let profileLabels = [];
 
         //     pendingAccounts.map((element,i) =>{
         //         // console.log(i);
@@ -199,16 +220,28 @@ class Personalized extends Component {
             edit:false
         })
     }
-    editClickHandle(){
-        this.setState({
-            edit:true
-        })
+    editClickHandle(e,value){
+    	
+    	if(value.value == 1){
+    		// console.log("edit basic info")
+    		this.setState({
+            	edit:true
+       	 	})
+    	}else{
+    		// console.log("edit requried courses")
+    		this.setState({
+            	editRequired:true
+       	 	})
+    	}
+        
     }
 
     render() {
     	const{edit,
+    		  editRequired,
     		  major,
-    		  grad_sem} = this.state
+    		  grad_sem,
+    		  requiredCourse} = this.state
     	const userInfo = this.cookies.get('userInfo')||null
     	if(!userInfo){
     		return(<Redirect to={{pathname:'/', state:{loggedIn: false}}}  push />)
@@ -216,6 +249,18 @@ class Personalized extends Component {
 
     	const editDisplay = edit? "":"none";
         const editHide = edit? "none":"";
+
+        const editDisplayRequired = editRequired? "":"none";
+        const editHideRequired = editRequired? "none":"";
+
+
+        console.log(requiredCourse);
+
+        // requiredCourse.map((label,j)=>{
+        // 	console.log(label)
+        // }
+        // )
+
 
     	let basicUserInfo  = (
     		<div>
@@ -243,12 +288,37 @@ class Personalized extends Component {
                     <div className="buttons">
                         <Button negative style={{display:editDisplay}} onClick={this.cancelClickHandle}>Cancel</Button>
                         <Button positive style={{display:editDisplay}} onClick={this.saveClickHandle}>Save</Button>
-                        <Button primary style={{display:editHide}} onClick={this.editClickHandle}>Edit</Button>
+                        <Button primary  value = '1' style={{display:editHide}} onClick={this.editClickHandle}>Edit</Button>
                     </div>
             </div>    
       
 
     	)
+
+    	let requiredCourseInfo = (
+    		<div>
+    			<div className="content">
+                    <div className="header">
+                            {requiredCourse.map((label,j) =>
+                                <Button key={j} className="labelbutton" value ={j}  
+                                		// active={this.state.active[i][j]} 
+                                		// onClick={this.LabelClickHandler.bind(this,i,j)
+                                		color = "orange"
+                                    // color={this.state.active[i][j] ? "orange" : null}
+                                    >
+                                {label.title}
+                                </Button>
+                            )}
+                    </div>
+                 </div>
+                 <div className="buttons">
+                    <Button negative style={{display:editDisplayRequired}} onClick={this.cancelClickHandle}>Cancel</Button>
+                    <Button positive style={{display:editDisplayRequired}} onClick={this.saveClickHandle}>Save</Button>
+                    <Button primary  value = '2' style={{display:editHideRequired}} onClick={this.editClickHandle}>Edit</Button>
+                </div>
+    		</div>
+    	)
+
         return(
             <div className="Personalized">
                 <h1>Personalized Page</h1>
@@ -262,9 +332,10 @@ class Personalized extends Component {
 				    </Segment>
 				   
 				    <Segment color='blue'>
-				    	<h3>Select the required course you have taken
-				    	</h3>
+				    	<h3>Select the required course you have taken</h3>
+				    	{requiredCourseInfo}
 				    </Segment>
+
 				    <Segment color='violet'>
 				    	<h3>Select the elective course you have taken</h3>
 				    </Segment>
