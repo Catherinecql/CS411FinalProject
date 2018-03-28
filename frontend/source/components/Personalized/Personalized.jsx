@@ -35,17 +35,23 @@ class Personalized extends Component {
         this.editClickHandle = this.editClickHandle.bind(this);
 
         this.updateNew = this.updateNew.bind(this);
+        this.updateNewElective = this.updateNewElective.bind(this);
         this.handleChange = this.handleChange.bind(this);
+
+
+        this.handleDeleteElectives = this.handleDeleteElectives.bind(this);
 	}
 
 
     componentDidMount(){
-        this.updateNew()
+        this.updateNew();
+        this.updateNewElective();
     }
 
     componentWilMount(){
         // console.log("new added" + this.props)
-        this.updateNew()
+        this.updateNew();
+        this.updateNewElective();
     }
 	componentWillReceiveProps(nextProps){
         // console.log("componentWillReceiveProps")
@@ -108,25 +114,7 @@ class Personalized extends Component {
 	    	})
 
 
-	    let electiveInfoUrl = this.baseUrl + '/gettakenelectives/' + username;
-	    axios.get(electiveInfoUrl)
-	    	.then((res) => {
-
-	    		let electiveCourseTaken = [];
-	    		let electives = res.data
-	    		electives.map((element,i)=>{
-	    			// console.log("element",element)
-	    			electiveCourseTaken.push(element.elective_course)
-	    		})
-	    		// console.log(res.data)
-	    		this.setState({
-	    			electiveCourse:electiveCourseTaken
-	    		})
-
-	    	})
-	    	.catch((error)=>{
-	    		console.log(error)
-	    	})
+	    
 
             // const pendingAccounts = res.data;
             // const addLabels = _.filter(addLabel);
@@ -170,6 +158,30 @@ class Personalized extends Component {
         // })
     }
 
+    updateNewElective(){
+    	const userInfo = this.cookies.get('userInfo')||null
+    	const username = userInfo?userInfo.username:null;
+    	let electiveInfoUrl = this.baseUrl + '/gettakenelectives/' + username;
+	    axios.get(electiveInfoUrl)
+	    	.then((res) => {
+
+	    		let electiveCourseTaken = [];
+	    		let electives = res.data
+	    		electives.map((element,i)=>{
+	    			// console.log("element",element)
+	    			electiveCourseTaken.push(element.elective_course)
+	    		})
+	    		// console.log(res.data)
+	    		this.setState({
+	    			electiveCourse:electiveCourseTaken
+	    		})
+
+	    	})
+	    	.catch((error)=>{
+	    		console.log(error)
+	    	})
+    }
+
 	handleClickDelete(){
 		const userInfo = this.cookies.get('userInfo')||null
 		const username = userInfo?userInfo.username:null;
@@ -188,15 +200,6 @@ class Personalized extends Component {
 	        .catch( (error) => {
 	            // let {errorType} = error.response.data;
 	            console.log(error);
-	            // if(errorType === 0){
-	            //     this.setState({
-	            //         usernameError: "Couldn't find your Leam account"
-	            //     })
-	            // }else if(errorType === 1){
-	            //     this.setState({
-	            //         passwordError: "Password incorrect"
-	            //     })
-	            // }
 	        });
 	}
 
@@ -219,11 +222,10 @@ class Personalized extends Component {
     }
 
 	saveClickHandle(e,value){
-		console.log(value.value)
+		// console.log(value.value)
+		const userInfo = this.cookies.get('userInfo')||null;
 		if(value.value == 1){
 			const{major,grad_sem,pendingGrad_sem,pendingMajor} = this.state
-	     	const userInfo = this.cookies.get('userInfo')||null;
-
 		    let url = this.baseUrl+ '/updatemajgradsem ';
 		    let newUserInfo = {}
 		    newUserInfo["username"] =  userInfo.username;
@@ -236,6 +238,26 @@ class Personalized extends Component {
 	                    major:pendingMajor,
 	                    grad_sem:pendingGrad_sem
 	                })
+	            })
+	            .catch((err)=>{
+	                console.log(err)
+	            })
+	    }else if(value.value == 3){
+	    	const{addElective} = this.state
+	    	console.log(addElective)
+	    	let url = this.baseUrl + '/addelective';
+	    	let electiveInfo = {}
+	    	let newUserInfo = {}
+	    	newUserInfo["username"] =  userInfo.username;
+	    	newUserInfo["elective_course"] =  addElective;
+
+	    	axios.post(url,newUserInfo)
+	    		.then((res)=>{
+	                this.setState({
+	                    edit:false,
+	                    addElective:''
+	                })
+	                this.updateNewElective();
 	            })
 	            .catch((err)=>{
 	                console.log(err)
@@ -265,7 +287,7 @@ class Personalized extends Component {
     	}
     }
     editClickHandle(e,value){
-    	
+    	console.log("editClickHandle", value.value)
     	if(value.value == 1){
     		// console.log("edit basic info")
     		this.setState({
@@ -282,6 +304,33 @@ class Personalized extends Component {
        	 	})
     	}
         
+    }
+
+    handleDeleteElectives(e,value){
+    	const userInfo = this.cookies.get('userInfo')||null
+		const username = userInfo?userInfo.username:null;
+
+    	const{electiveCourse} = this.state
+    	console.log("handleDeleteElectives", value.value)
+    	let index = value.value
+    	console.log(electiveCourse[index])
+
+    	let userAuthInfo = {}
+		userAuthInfo["username"] = username;
+		userAuthInfo["elective_course"] = electiveCourse[index]
+    	let url = this.baseUrl + '/deleteelective/' 
+    	axios.delete(url, {data:userAuthInfo}) 
+	        .then((response)=>{
+	            // console.log(response);
+	            // this.handleLogout();
+	            this.updateNewElective()
+
+	        })
+	        .catch( (error) => {
+	            // let {errorType} = error.response.data;
+	            console.log(error);
+	        });
+
     }
 
     render() {
@@ -384,8 +433,8 @@ class Personalized extends Component {
                                 		// active={this.state.active[i][j]} 
                                 		// onClick={this.LabelClickHandler.bind(this,i,j)
                                 		color = "purple"
-                                		disabled={!editRequired}
-                                		
+                                		disabled={!editElective}
+                                		onClick={this.handleDeleteElectives}
                                     // color={this.state.active[i][j] ? "orange" : null}
                                     >
                                 {label}
