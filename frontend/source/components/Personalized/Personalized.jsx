@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button,Segment,Grid,Input} from 'semantic-ui-react'
+import { Button,Segment,Grid,Input,Label} from 'semantic-ui-react'
 import {BrowserRouter as Router, Route, Link,browserHistory,Redirect} from 'react-router-dom';
 import axios from 'axios'
 import styles from './Personalized.scss'
@@ -13,10 +13,15 @@ class Personalized extends Component {
 			username: '',
 			major:'',
 			grad_sem:'',
+			pendingMajor:'',
+			pendingGrad_sem:'',
 			edit:false,
 			editRequired: false,
+			editElective:false,
+			addElective:'',
 			active:[],
-			requiredCourse:[]
+			requiredCourse:[],
+			electiveCourse:[]
 
 		}
 		this.handleClickDelete = this.handleClickDelete.bind(this)
@@ -79,7 +84,9 @@ class Personalized extends Component {
 	            let grad_sem = data.grad_sem
 	            this.setState({
 	            	major: major,
-	            	grad_sem: grad_sem
+	            	grad_sem: grad_sem,
+	            	pendingGrad_sem:grad_sem,
+	            	pendingMajor:major
 
 	            })
 	        })
@@ -91,13 +98,35 @@ class Personalized extends Component {
 	    console.log(requriedInfoUrl)
 	    axios.get(requriedInfoUrl)
 	    	.then((res) => {
-	    		let requriedCourseTaken = res.data[0]
+	    		let requriedCourseTaken = res.data[0].courses_taken
 	    		console.log(requriedCourseTaken)
+
+
 	    	})
 	    	.catch((error)=>{
 	    		console.log(error)
 	    	})
 
+
+	    let electiveInfoUrl = this.baseUrl + '/gettakenelectives/' + username;
+	    axios.get(electiveInfoUrl)
+	    	.then((res) => {
+
+	    		let electiveCourseTaken = [];
+	    		let electives = res.data
+	    		electives.map((element,i)=>{
+	    			// console.log("element",element)
+	    			electiveCourseTaken.push(element.elective_course)
+	    		})
+	    		// console.log(res.data)
+	    		this.setState({
+	    			electiveCourse:electiveCourseTaken
+	    		})
+
+	    	})
+	    	.catch((error)=>{
+	    		console.log(error)
+	    	})
 
             // const pendingAccounts = res.data;
             // const addLabels = _.filter(addLabel);
@@ -189,47 +218,29 @@ class Personalized extends Component {
         })
     }
 
-	saveClickHandle(){
-		const{major,grad_sem} = this.state
-     	const userInfo = this.cookies.get('userInfo')||null;
-	    // console.log(userInfo)
-	    // let username  = userInfo.username;
+	saveClickHandle(e,value){
+		console.log(value.value)
+		if(value.value == 1){
+			const{major,grad_sem,pendingGrad_sem,pendingMajor} = this.state
+	     	const userInfo = this.cookies.get('userInfo')||null;
 
-	    // const {username,email} = this.state;
-	    let url = this.baseUrl+ '/updatemajgradsem ';
-	    // console.log(url)
-	    let newUserInfo = {}
-	    newUserInfo["username"] =  userInfo.username;
-	    newUserInfo["major"] = major;
-	    newUserInfo["grad_sem"] = grad_sem;
-         // console.log(data)
-        axios.put(url,newUserInfo)
-            .then((res)=>{
-                // console.log(res)
-                // let data = res.data.data
-                // if(data){
-                //     console.log("debugging")
-                //     this.cookies.remove('userInfo', { path: '/' });
-                //     this.cookies.set('userInfo', res.data.data, { path: '/' });
-                //     this.props.loginHandler(data);
-
-                // }
-               
-                this.setState({
-                    edit:false
-                })
-                
-                // // setTimeout(this.closeModal(),1000)
-                // // this.closeModal()
-            })
-            .catch((err)=>{
-                console.log(err)
-                // this.setState({
-                //     confirmPasswordError: err
-                // })
-            })
-
-
+		    let url = this.baseUrl+ '/updatemajgradsem ';
+		    let newUserInfo = {}
+		    newUserInfo["username"] =  userInfo.username;
+		    newUserInfo["major"] = pendingMajor;
+		    newUserInfo["grad_sem"] = pendingGrad_sem;
+	        axios.put(url,newUserInfo)
+	            .then((res)=>{
+	                this.setState({
+	                    edit:false,
+	                    major:pendingMajor,
+	                    grad_sem:pendingGrad_sem
+	                })
+	            })
+	            .catch((err)=>{
+	                console.log(err)
+	            })
+	    }
 
 
     }
@@ -242,10 +253,14 @@ class Personalized extends Component {
     		this.setState({
             	edit:false
        	 	})
-    	}else{
+    	}else if (value.value == 2){
     		// console.log("edit requried courses")
     		this.setState({
             	editRequired:false
+       	 	})
+    	}else{
+    		this.setState({
+            	editElective:false
        	 	})
     	}
     }
@@ -256,10 +271,14 @@ class Personalized extends Component {
     		this.setState({
             	edit:true
        	 	})
-    	}else{
+    	}else if (value.value == 2){
     		// console.log("edit requried courses")
     		this.setState({
             	editRequired:true
+       	 	})
+    	}else{
+    		this.setState({
+            	editElective:true
        	 	})
     	}
         
@@ -268,9 +287,14 @@ class Personalized extends Component {
     render() {
     	const{edit,
     		  editRequired,
+    		  editElective,
     		  major,
     		  grad_sem,
-    		  requiredCourse} = this.state
+    		  requiredCourse,
+    		  electiveCourse,
+    		  addElective,
+    		  pendingGrad_sem,
+    		  pendingMajor} = this.state
     	const userInfo = this.cookies.get('userInfo')||null
     	if(!userInfo){
     		return(<Redirect to={{pathname:'/', state:{loggedIn: false}}}  push />)
@@ -282,8 +306,10 @@ class Personalized extends Component {
         const editDisplayRequired = editRequired? "":"none";
         const editHideRequired = editRequired? "none":"";
 
+        const editDisplayElective = editElective? "":"none";
+        const editHideElective = editElective? "none":"";
 
-        // console.log(requiredCourse);
+        // console.log("elective:",electiveCourse);
 
         // requiredCourse.map((label,j)=>{
         // 	console.log(label)
@@ -299,7 +325,7 @@ class Personalized extends Component {
                             <div className="major row">
                                       <span className="title">Major:&nbsp;</span>
                                       <span className="text" style={{display:editHide}}>{major}</span>
-                                      <Input name="major" value={major} style={{display:editDisplay}} onChange={this.handleChange}></Input>
+                                      <Input name="pendingMajor" value={pendingMajor} style={{display:editDisplay}} onChange={this.handleChange}></Input>
                             </div>
                         </Grid.Column>
                         <Grid.Column className="userColumn">
@@ -307,7 +333,7 @@ class Personalized extends Component {
                             <div className="grad_sem row">
                                   <span className="title">grad_sem:&nbsp; </span>
                                   <span className="text" style={{display:editHide}}>{grad_sem}</span>
-                                  <Input name="grad_sem" value={grad_sem} style={{display:editDisplay}} onChange={this.handleChange}></Input>
+                                  <Input name="pendingGrad_sem" value={pendingGrad_sem} style={{display:editDisplay}} onChange={this.handleChange}></Input>
                             </div>
 
         
@@ -332,7 +358,7 @@ class Personalized extends Component {
                                 <Button key={j} className="labelbutton" value ={j}  
                                 		// active={this.state.active[i][j]} 
                                 		// onClick={this.LabelClickHandler.bind(this,i,j)
-                                		color = "orange"
+                                		color = "teal"
                                 		disabled={!editRequired}
                                     // color={this.state.active[i][j] ? "orange" : null}
                                     >
@@ -347,6 +373,43 @@ class Personalized extends Component {
                     <Button primary  value = '2' style={{display:editHideRequired}} onClick={this.editClickHandle}>Edit</Button>
                 </div>
     		</div>
+    	)
+
+    	let electiveCourseInfo = (
+    		<div>
+    			<div className="content">
+                    <div className="header">
+                            {electiveCourse.map((label,j) =>
+                                <Button key={j} className="labelbutton" value ={j}  
+                                		// active={this.state.active[i][j]} 
+                                		// onClick={this.LabelClickHandler.bind(this,i,j)
+                                		color = "purple"
+                                		disabled={!editRequired}
+                                		
+                                    // color={this.state.active[i][j] ? "orange" : null}
+                                    >
+                                {label}
+                                </Button>
+                            )}
+                    </div>
+                 </div>
+                 <div className="buttons">
+                     
+                     <Button primary  value = '3' style={{display:editHideElective}} onClick={this.editClickHandle}>Edit</Button>
+                </div>
+                <div className="buttons">
+                	<div className="grad_sem row">
+                        <Button positive value = '3' style={{display:editDisplayElective}} onClick={this.saveClickHandle}>AddCourse</Button>        	
+                        <span className="text" style={{display:editHideElective}}>{addElective}</span>
+                        <Input name="addElective" value={addElective} style={{display:editDisplayElective}} onChange={this.handleChange}></Input>
+                    </div>
+                    
+                </div>
+                <div className="buttons">
+                	<Button negative value = '3'style={{display:editDisplayElective}} onClick={this.cancelClickHandle}>Cancel</Button>
+                </div>
+    		</div>
+
     	)
 
         return(
@@ -368,6 +431,7 @@ class Personalized extends Component {
 
 				    <Segment color='violet'>
 				    	<h3>Select the elective course you have taken</h3>
+				    	{electiveCourseInfo}
 				    </Segment>
 				   
 				   
