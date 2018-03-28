@@ -50,3 +50,20 @@ api documentation
 		"username" : "bob75",
 		"elective_course": "CS411"
 	}
+
+
+7. Show user information
+	GET http://localhost:7002/getstudentinfo/bob75
+	result: [
+	    {
+	        "username": "bob75",
+	        "password": "bobpassword",
+	        "email": "bob75@illinois.edu",
+	        "grad_sem": "SP19",
+	        "major": "ECE",
+	        "courses_taken": "CS225"
+	    }
+	]
+
+
+8. Get all professors, their GPA and RMP link for a course
