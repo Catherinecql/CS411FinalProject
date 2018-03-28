@@ -26,8 +26,14 @@
     "webpack-dev-server": "^2.4.2"
   },
   "dependencies": {
+    "autosuggest-highlight": "^3.1.1",
     "axios": "^0.16.2",
+    "file-system": "^2.2.2",
+    "lodash": "^4.17.5",
+    "material-ui": "^1.0.0-beta.38",
+    "material-ui-icons": "^1.0.0-beta.36",
     "normalize.css": "^6.0.0",
+    "prop-types": "^15.6.1",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-router": "^4.0.0",
