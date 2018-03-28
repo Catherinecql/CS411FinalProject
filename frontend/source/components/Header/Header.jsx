@@ -109,7 +109,7 @@ class Header extends Component {
                             <Dropdown text={username}>
                                 <Dropdown.Menu>
                                     
-                                    <Link to="/Personalized" className="drop_item">Personalized Page</Link>
+                                    <Link to="/Personalized" className="drop_item">Personalized</Link>
                                		<Link to="/" onClick={this.handleLogout} className="drop_item">Logout</Link>
                                 </Dropdown.Menu>
                             </Dropdown>    

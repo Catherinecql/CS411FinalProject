@@ -66,6 +66,7 @@ app.post('/adduser', (req, res) => {
 	var sql = "insert into User(username,password,email,grad_sem,major,courses_taken) values ('" + username + "','" + password + "','" + email + "','', '', '')";
 	console.log(sql);
 	connection.query(sql, function(error,result,fields){
+		// console.log(error)
 		if(error) {
 			var err_message = "Error: ER_DUP_ENTRY: Duplicate entry '" + username + "' for key 'PRIMARY'";
 			res.status(403).send(err_message);
