@@ -14,13 +14,19 @@ api documentation
 		"username" : "bob75"
 	}
 
-3. Update courses, major, and graduation semester (Save button)
-	Put http://localhost:7002/updateuser
+3. Update major and graduation semester (Save button 1)
+	Put http://localhost:7002/updatemajgradsem
 	request: {
 		"username" : "bob75",
-		"courses_taken"  : "CS210, CS374",
 		"major": "Computer Science",
 		"grad_sem": "SP19"
+	}
+
+3.2 Update courses (Save button 2)
+	Put http://localhost:7002/updatecourses
+	request: {
+		"username" : "bob75",
+		"courses_taken"  : "CS210, CS374"
 	}
 
 4. Show classes the user’s has taken
