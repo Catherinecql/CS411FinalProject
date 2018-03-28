@@ -29,12 +29,24 @@ api documentation
 		"courses_taken"  : "CS210, CS374"
 	}
 
-4. Show classes the user’s has taken
+
+4. Show core classes the user’s has taken
 	Get http://localhost:7002/gettakenclasses/bob75
 	res: [
     	{
         	"courses_taken": "CS210, CS374"
     	}
+	]
+
+4. Show electives the user’s has taken
+	Get http://localhost:7002/gettakenelectives/bob75
+	res: [
+    {
+        "elective_course": "CS411"
+    },
+    {
+        "elective_course": "CS412"
+    }
 	]
 
 5. Add an elective
