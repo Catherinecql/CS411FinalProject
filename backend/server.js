@@ -123,7 +123,7 @@ app.put('/updatecourses', (req, res) => {
 	})
 });
 
-// 4. Show classes the user’s has taken
+// 4. Show core classes the user’s has taken
 app.get('/gettakenclasses/:username', function (req, res) {
 	var username = req.params.username;
 	console.log(username);
@@ -137,6 +137,26 @@ app.get('/gettakenclasses/:username', function (req, res) {
 	})
 });
 
+
+// 4.2 Show electives the user’s has taken
+app.get('/gettakenelectives/:username', function (req, res) {
+	var username = req.params.username;
+	console.log(username);
+	connection.query("select elective_course from takes WHERE username = '" + username + "';",function (error, result,fields){
+		if(error) {
+			var err_message = "Error: gettakenelectives/" + username;
+			res.status(403).send(err_message);
+		}
+		if(result.length==0) {
+			var err_message = "Error: User not found:" + username;
+			res.status(403).send(err_message);
+		}
+		else {
+			console.log(result)
+			res.send(result)
+		}
+	})
+});
 
 // 5. Add a new elective
 app.post('/addelective', (req, res) => {
