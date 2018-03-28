@@ -178,7 +178,7 @@ app.get('/getstudentinfo/:username', function (req, res) {
 	console.log(username);
 	connection.query("select * from User WHERE username = '" + username + "';",function (error, result,fields){
 		if(error) {
-			var err_message = "Error: gettakenclasses/" + username;
+			var err_message = "Error: getstudentinfo/" + username;
 			res.status(403).send(err_message);
 		}
 		if(result.length==0) {
