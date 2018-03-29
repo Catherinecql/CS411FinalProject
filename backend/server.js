@@ -205,7 +205,7 @@ app.delete('/deleteelective', (req, res) => {
 });
 
 
-// 4. Show user information
+// 7. Show user information
 app.get('/getstudentinfo/:username', function (req, res) {
 	var username = req.params.username;
 	console.log(username);
@@ -228,7 +228,7 @@ app.get('/getstudentinfo/:username', function (req, res) {
 
 
 
-// 7. Get all professors, their GPA and RMP link for a course
+// 8. Get all professors, their GPA and RMP link for a course
 app.get('/getAllProfessors/:course_department/:course_number', function (req, res) {
 	var course_department = req.params.course_department;
 	var course_number = req.params.course_number;
@@ -259,7 +259,7 @@ app.get('/getAllProfessors/:course_department/:course_number', function (req, re
 });
 
 
-// 7. Get next semester's professors, their GPA and RMP link for a course
+// 9. Get next semester's professors, their GPA and RMP link for a course
 app.get('/getNextSemProfessors/:course_department/:course_number', function (req, res) {
 	var course_department = req.params.course_department;
 	var course_number = req.params.course_number;
@@ -298,7 +298,7 @@ app.get('/getNextSemProfessors/:course_department/:course_number', function (req
 });
 
 
-// 7. Get all professors, their GPA and RMP link for a course
+// 10. Get all professors, their GPA and RMP link for a course
 app.get('/getMinGPAProfessors/:course_department/:course_number/:minGPA', function (req, res) {
 	var course_department = req.params.course_department;
 	var course_number = req.params.course_number;
@@ -329,6 +329,38 @@ app.get('/getMinGPAProfessors/:course_department/:course_number/:minGPA', functi
 		}
 	})
 });
+
+
+// 11. Get the number of times each professor taught the inputted course
+app.get('/getProfessorsCount/:course_department/:course_number', function (req, res) {
+	var course_department = req.params.course_department;
+	var course_number = req.params.course_number;
+
+	var sql_select = "select Professor.name_format1, COUNT(CourseHistory.gpa) ";
+	var sql_from = "FROM CourseHistory, Professor ";
+
+	var sql_where = "WHERE CourseHistory.course_department = '"+course_department+"'";
+	var sql_where1 = " AND CourseHistory.course_number = '"+course_number+"'";
+	var sql_where2 = " AND CourseHistory.professor_name_format2 = Professor.name_format2 ";
+	var sql_groupby = " GROUP BY CourseHistory.professor_name_format2";
+	var sql_query = sql_select + sql_from + sql_where + sql_where1 + sql_where2 + sql_groupby;
+
+	console.log(sql_query);
+	connection.query(sql_query,function (error, result,fields) {
+		if(error) {
+			var err_message = "Error: getNextSemProfessors/" + course_department + course_number;
+			res.status(403).send(err_message);
+		} else if(result.length == 0) {
+			var err_message = "Error: No records found for past section of this course.";
+			res.status(403).send(err_message);
+		}
+		else {
+			console.log(result)
+			res.send(result)
+		}
+	})
+});
+
 
 var port = process.env.PORT || 7002
 
