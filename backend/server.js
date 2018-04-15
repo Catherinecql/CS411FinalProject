@@ -1,5 +1,7 @@
 'use strict'
 
+var bcrypt = require('bcrypt')
+
 var express = require('express'),
     bodyParser = require('body-parser'),
     mysql = require('mysql');
@@ -47,23 +49,30 @@ app.post('/login', (req, res) => {
 			var err_message = "Error: Login failed: User not registered.";
 			res.status(403).send(err_message);
 		}
-		else if(result[0].password == input_password) {
+		else if(bcrypt.compareSync(input_password,result[0].password)) {
+			console.log(result[0].password);
+			console.log(input_password);
 			var message = "Logged in";
 			res.status(200).send(message);
 		}
 		else {
 			var err_message = "Error: Login failed: Wrong password.";
+			console.log(result[0].password);
+			console.log(input_password);
 			res.status(403).send(err_message);
 		}
 	})
 });
+
 
 // 1. Add a new user
 app.post('/adduser', (req, res) => {
 	var username = req.body.username;
 	var password = req.body.password;
 	var email = req.body.email;
-	var sql = "insert into User(username,password,email,grad_sem,major,courses_taken) values ('" + username + "','" + password + "','" + email + "','', '', '')";
+	var hashedPassword = bcrypt.hashSync(password, 10);
+
+	var sql = "insert into User(username,password,email,grad_sem,major,courses_taken) values ('" + username + "','" + hashedPassword + "','" + email + "','', '', '')";
 	console.log(sql);
 	connection.query(sql, function(error,result,fields){
 		if(error) {
