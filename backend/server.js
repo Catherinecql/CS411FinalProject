@@ -162,7 +162,7 @@ app.get('/gettakenelectives/:username', function (req, res) {
 	console.log(username);
 	connection.query("select elective_course from takes WHERE username = '" + username + "';",function (error, result,fields){
 		if(error) {
-			var err_message = "Error: gettakenelectives/" + username;
+			var err_message = "Error:gettakenelectives/" + username;
 			res.status(403).send(err_message);
 		}
 		else if(result.length==0) {
