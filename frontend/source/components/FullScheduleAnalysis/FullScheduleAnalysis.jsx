@@ -1,15 +1,28 @@
 import React, { Component } from 'react'
 import { Button } from 'semantic-ui-react'
-import { Link } from 'react-router-dom'
-
+import {BrowserRouter as Router, Route, Link,browserHistory,Redirect} from 'react-router-dom';
+import axios from 'axios';
+import Cookies from 'universal-cookie';
 import styles from './FullScheduleAnalysis.scss'
 
 class FullScheduleAnalysis extends Component {
+	constructor(props) {
+        super(props);
+        this.state = {  
+            login:false,     
+    	};
+    	this.cookies = new Cookies();
+    }
 
     render() {
+    	const{login} = this.state;
+       
+    	if(!login){
+            return(<Redirect to={{pathname:'/', state:{loggedIn: false}}}  push />)
+        }
         return(
             <div className="FullScheduleAnalysis">
-                <h1>FullScheduleAnalysis</h1>
+                <h1>Recommender</h1>
             </div>
         )
     }
