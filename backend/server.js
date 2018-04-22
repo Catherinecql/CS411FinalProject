@@ -43,16 +43,18 @@ app.post('/login', (req, res) => {
     console.log("input_password", input_password)
     // console.log(bcrypt.hashSync(input_password,10))
     connection.query("select password from User WHERE username = '" + username + "';",function (error, result,fields) {
-    	console.log("error", error)
-    	console.log("result",result)
+    	// console.log("error", error)
+    	// console.log("result",result)
 		if(error) {
-			var err_message = "Error: Login";
+			let err_message = "Error: Login";
 			res.status(403).send(err_message);
 		}
 		else if(result.length == 0) {
-			var err_message = "Error: Login failed: User not registered.";
-			res.status(401).send(err_message);
-		}
+			let err_message = "Error: Login failed: User not registered.";
+			res.status(401).send({
+                errorType:0
+            });
+        }
 		else if(bcrypt.compareSync(input_password,result[0].password)){
 			console.log(result[0].password);
 			console.log(input_password);
@@ -60,15 +62,12 @@ app.post('/login', (req, res) => {
 			res.status(200).send(message);
 		}
 		else {
-			console.log(bcrypt.compareSync(input_password,result[0].password))
-			var err_message = "Error: Login failed: Wrong password.";
-			console.log(result[0].password);
-			console.log(input_password);
-			res.status(403).send({
-				err: err_message,
-				pwd: result[0].password,
-				wrong:input_password
-
+			// console.log(bcrypt.compareSync(input_password,result[0].password))
+			let err_message = "Error: Login failed: Wrong password.";
+			// console.log(result[0].password);
+			// console.log(input_password);
+			res.status(401).send({
+				errorType:1
 			});
 		}
 	})
