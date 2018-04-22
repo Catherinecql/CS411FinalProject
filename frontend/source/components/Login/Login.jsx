@@ -79,13 +79,10 @@ class Login extends Component {
             // console.log("userAuthInfo: ", userAuthInfo)
             axios.post(url, userAuthInfo) 
                 .then((response)=>{
-                     console.log(response);
+                     // console.log(response);
                      let data = response.data;
                      if(data){
-                        console.log(data)
-
-
-                        console.log("successfully login with ", userAuthInfo.username);
+                        // console.log("successfully login with ", userAuthInfo.username);
                         this.cookies.set('userInfo', userAuthInfo, { path: '/' });
                         this.props.loginHandler(data);
                         this.setState({
@@ -95,7 +92,7 @@ class Login extends Component {
                 })
                 .catch( (error) => {
                     let {errorType} = error.response.data;
-                    console.log(errorType);
+                    // console.log(errorType);
                     if(errorType === 0){
                         this.setState({
                             usernameError: "The username does not exist!"
