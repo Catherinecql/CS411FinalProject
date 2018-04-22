@@ -40,7 +40,11 @@ connection.connect(function(err) {
 app.post('/login', (req, res) => {
     var username = req.body.username;
     var input_password = req.body.password?req.body.password:"";
+    console.log("input_password", input_password)
+    // console.log(bcrypt.hashSync(input_password,10))
     connection.query("select password from User WHERE username = '" + username + "';",function (error, result,fields) {
+    	console.log("error", error)
+    	console.log("result",result)
 		if(error) {
 			var err_message = "Error: Login";
 			res.status(403).send(err_message);
@@ -49,17 +53,23 @@ app.post('/login', (req, res) => {
 			var err_message = "Error: Login failed: User not registered.";
 			res.status(401).send(err_message);
 		}
-		else if(bcrypt.compareSync(input_password,result[0].password)) {
+		else if(bcrypt.compareSync(input_password,result[0].password)){
 			console.log(result[0].password);
 			console.log(input_password);
 			var message = "Logged in";
 			res.status(200).send(message);
 		}
 		else {
+			console.log(bcrypt.compareSync(input_password,result[0].password))
 			var err_message = "Error: Login failed: Wrong password.";
 			console.log(result[0].password);
 			console.log(input_password);
-			res.status(403).send(err_message);
+			res.status(403).send({
+				err: err_message,
+				pwd: result[0].password,
+				wrong:input_password
+
+			});
 		}
 	})
 });
@@ -70,7 +80,7 @@ app.post('/adduser', (req, res) => {
 	var username = req.body.username;
 	var password = req.body.password;
 	var email = req.body.email;
-	var hashedPassword = bcrypt.hashSync(password, 10);
+	var hashedPassword = bcrypt.hashSync(password,10);
 
 	var sql = "insert into User(username,password,email,grad_sem,major,courses_taken) values ('" + username + "','" + hashedPassword + "','" + email + "','', '', '')";
 	console.log(sql);

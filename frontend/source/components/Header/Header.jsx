@@ -81,7 +81,7 @@ class Header extends Component {
 				          active={activeItem === 'Full Schedule Analysis '}
 				          onClick={this.handleItemClick}
 				        >
-				          <Link to="/FullScheduleAnalysis">Full Schedule Analysis</Link>
+				          <Link to="/FullScheduleAnalysis">Recommend me</Link>
 				        </Menu.Item>
 
 				        <Menu.Item

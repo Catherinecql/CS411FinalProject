@@ -38,7 +38,7 @@ class Personalized extends Component {
         this.updateNewElective = this.updateNewElective.bind(this);
         this.handleChange = this.handleChange.bind(this);
 
-
+        this.LabelClickHandler = this.LabelClickHandler.bind(this)
         this.handleDeleteElectives = this.handleDeleteElectives.bind(this);
 	}
 
@@ -104,9 +104,16 @@ class Personalized extends Component {
 	    console.log(requriedInfoUrl)
 	    axios.get(requriedInfoUrl)
 	    	.then((res) => {
-	    		let requriedCourseTaken = res.data[0].courses_taken
-	    		console.log(requriedCourseTaken)
-
+	    		// let requiredCourseTaken = []
+	    		let requiredCourseTaken = res.data
+	    		console.log(requiredCourseTaken)
+	    		let acitiveArr = [];
+	    		let temp = []
+	    		temp = requiredCourseTaken.split(', ')
+	    		console.log("temp",temp)
+	    		for (let i = 0; i < requiredCourseTaken.length; i++){
+	    			console.log(requiredCourseTaken[i])
+	    		}
 
 	    	})
 	    	.catch((error)=>{
@@ -206,8 +213,8 @@ class Personalized extends Component {
 	handleChange(event,{name,value}){
         // console.log(event)
         // console.log(event.value);
-        console.log("value",value)
-        console.log("name",[name])
+        // console.log("value",value)
+        // console.log("name",[name])
         this.setState({ [name]: value })
         
     }  
@@ -269,32 +276,32 @@ class Personalized extends Component {
 
     cancelClickHandle(e,value){
         const {edit} = this.state;
-        
         if(value.value == 1){
     		// console.log("edit basic info")
     		this.setState({
             	edit:false
        	 	})
     	}else if (value.value == 2){
-    		// console.log("edit requried courses")
     		this.setState({
             	editRequired:false
        	 	})
     	}else{
     		this.setState({
-            	editElective:false
+            	editElective:false,
+                addElective:''
+
        	 	})
     	}
     }
     editClickHandle(e,value){
-    	console.log("editClickHandle", value.value)
+    	// console.log("editClickHandle", value.value)
     	if(value.value == 1){
     		// console.log("edit basic info")
     		this.setState({
             	edit:true
        	 	})
     	}else if (value.value == 2){
-    		// console.log("edit requried courses")
+    		console.log("edit requried courses")
     		this.setState({
             	editRequired:true
        	 	})
@@ -306,14 +313,35 @@ class Personalized extends Component {
         
     }
 
+
+    LabelClickHandler(index,event){
+        console.log("requried",index)
+        console.log(this.state.requiredCourse)
+        // let arr = this.state.active;
+        // // console.log(arr);
+        // arr[value1][value2] = !arr[value1][value2];
+        // //
+        // // let addProfileLabels = this.state.addProfileLabels[value1];
+        // // console.log(this.state.addProfileLabels)
+        // // console.log(this.state.addProfileLabels[value1])
+        // // console.log(this.state.addLabels[value2].title)
+        // let newobj = {};
+        // newobj[this.state.addLabels[value2].title]= {count:1}
+        // this.state.addProfileLabels[value1][this.state.addLabels[value2].title]={count:1};
+
+        // this.setState({
+        //     active: arr,
+        // })
+    }
+
     handleDeleteElectives(e,value){
     	const userInfo = this.cookies.get('userInfo')||null
 		const username = userInfo?userInfo.username:null;
 
     	const{electiveCourse} = this.state
-    	console.log("handleDeleteElectives", value.value)
+    	// console.log("handleDeleteElectives", value.value)
     	let index = value.value
-    	console.log(electiveCourse[index])
+    	// console.log(electiveCourse[index])
 
     	let userAuthInfo = {}
 		userAuthInfo["username"] = username;
@@ -321,13 +349,9 @@ class Personalized extends Component {
     	let url = this.baseUrl + '/deleteelective/' 
     	axios.delete(url, {data:userAuthInfo}) 
 	        .then((response)=>{
-	            // console.log(response);
-	            // this.handleLogout();
 	            this.updateNewElective()
-
 	        })
 	        .catch( (error) => {
-	            // let {errorType} = error.response.data;
 	            console.log(error);
 	        });
 
@@ -406,7 +430,7 @@ class Personalized extends Component {
                             {requiredCourse.map((label,j) =>
                                 <Button key={j} className="labelbutton" value ={j}  
                                 		// active={this.state.active[i][j]} 
-                                		// onClick={this.LabelClickHandler.bind(this,i,j)
+                                		onClick={this.LabelClickHandler.bind(this,j)}
                                 		color = "teal"
                                 		disabled={!editRequired}
                                     // color={this.state.active[i][j] ? "orange" : null}
@@ -447,10 +471,14 @@ class Personalized extends Component {
                      <Button primary  value = '3' style={{display:editHideElective}} onClick={this.editClickHandle}>Edit</Button>
                 </div>
                 <div className="buttons">
-                	<div className="grad_sem row">
-                        <Button positive value = '3' style={{display:editDisplayElective}} onClick={this.saveClickHandle}>AddCourse</Button>        	
+                	<div className="grad_sem row">      	
                         <span className="text" style={{display:editHideElective}}>{addElective}</span>
-                        <Input name="addElective" value={addElective} style={{display:editDisplayElective}} onChange={this.handleChange}></Input>
+                        <Input className = "addelective" name="addElective" value={addElective} style={{display:editDisplayElective}} onChange={this.handleChange}></Input>
+                        <Button positive value = '3' 
+                                style={{display:editDisplayElective}} 
+                                onClick={this.saveClickHandle}>
+                                AddCourse
+                        </Button>  
                     </div>
                     
                 </div>
