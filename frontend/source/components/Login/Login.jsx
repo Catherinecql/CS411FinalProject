@@ -76,12 +76,6 @@ class Login extends Component {
             let userAuthInfo = {};
             userAuthInfo["username"] = username;
             userAuthInfo["password"] = password;
-            console.log("user userAuthInfo",userAuthInfo)
-            this.cookies.set('userInfo', userAuthInfo, { path: '/' });
-            this.props.loginHandler(userAuthInfo);
-            this.setState({
-                login:true
-            })
             // axios.post(url, userAuthInfo) 
             //     .then((response)=>{
             //         //  console.log(response);
@@ -109,6 +103,14 @@ class Login extends Component {
             //             })
             //         }
             //     });
+
+            // console.log("user userAuthInfo",userAuthInfo)
+            this.cookies.set('userInfo', userAuthInfo, { path: '/' });
+            this.props.loginHandler(userAuthInfo);
+            this.setState({
+                login:true
+            })
+
         }
     }
 
@@ -163,6 +165,10 @@ class Login extends Component {
                         or
                         <span className="addBold"> Password </span>
                         ?
+                    </div>
+                    <div  className="field loginText"> Don't have an account?
+                        <span className="addBold"> <Link to="/">Register</Link> </span>
+
                     </div>
 
                 </Form>
