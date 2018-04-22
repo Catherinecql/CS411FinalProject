@@ -18,12 +18,12 @@ class Header extends Component {
         this.cookies = new Cookies();
     }
     componentWillMount() {
-        // console.log("componentWillMount")
+        console.log("componentWillMount")
         this.handleLogin();
     }
 
     componentWillReceiveProps(nextProps){
-        console.log("componentWillReceiveProps")
+        // console.log("componentWillReceiveProps")
         this.handleLogin();
         if(JSON.stringify(nextProps) != JSON.stringify(this.props)){
             if(nextProps.userInfo){
@@ -41,7 +41,7 @@ class Header extends Component {
 
     handleLogin() {
         const userInfo = this.cookies.get('userInfo')||null
-        // console.log("handleLogin",userInfo)
+        console.log("handleLogin",userInfo)
         this.setState({ userInfo: userInfo });
     }
 
@@ -61,7 +61,7 @@ class Header extends Component {
 	render(){
 		const { activeItem,userInfo } = this.state
 		console.log(this.props)
-		
+		console.log(userInfo)
         const username = userInfo?userInfo.username:null;
     
 		return(
