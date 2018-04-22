@@ -18,7 +18,7 @@ class Header extends Component {
         this.cookies = new Cookies();
     }
     componentWillMount() {
-        console.log("componentWillMount")
+        // console.log("componentWillMount")
         this.handleLogin();
     }
 
@@ -41,12 +41,12 @@ class Header extends Component {
 
     handleLogin() {
         const userInfo = this.cookies.get('userInfo')||null
-        console.log("handleLogin",userInfo)
+        // console.log("handleLogin",userInfo)
         this.setState({ userInfo: userInfo });
     }
 
     handleLogout(){
-    	console.log("handleLogout")
+    	// console.log("handleLogout")
         this.cookies.remove('userInfo', { path: '/' });
         this.setState({ userInfo: null });
         this.setState({
@@ -60,8 +60,8 @@ class Header extends Component {
 
 	render(){
 		const { activeItem,userInfo } = this.state
-		console.log(this.props)
-		console.log(userInfo)
+		// console.log(this.props)
+		// console.log(userInfo)
         const username = userInfo?userInfo.username:null;
     
 		return(
