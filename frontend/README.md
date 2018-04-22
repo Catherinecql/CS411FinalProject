@@ -1,5 +1,15 @@
 api documentation
 
+0. Login
+	Post http://localhost:7002/login
+	request: {
+		"username" : "bob75",
+		"password": "bobpassword"
+	}
+error codes:
+401: Login failed: User not registered.
+403: Login failed: Wrong password.
+
 1. Add a new user
 	Post http://http://localhost:7002/adduser
 	request: {

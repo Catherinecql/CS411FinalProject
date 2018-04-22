@@ -47,7 +47,7 @@ app.post('/login', (req, res) => {
 		}
 		else if(result.length == 0) {
 			var err_message = "Error: Login failed: User not registered.";
-			res.status(403).send(err_message);
+			res.status(401).send(err_message);
 		}
 		else if(bcrypt.compareSync(input_password,result[0].password)) {
 			console.log(result[0].password);
