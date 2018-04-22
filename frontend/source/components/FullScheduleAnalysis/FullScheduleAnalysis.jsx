@@ -15,9 +15,8 @@ class FullScheduleAnalysis extends Component {
     }
 
     render() {
-    	const{login} = this.state;
-       
-    	if(!login){
+    	const userInfo = this.cookies.get('userInfo')||null;
+    	if(!userInfo){
             return(<Redirect to={{pathname:'/', state:{loggedIn: false}}}  push />)
         }
         return(

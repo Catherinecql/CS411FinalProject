@@ -24,7 +24,7 @@ class Login extends Component {
         };
 
         // this.baseUrl = 'http://104.236.255.229:5171/';
-        // this.baseUrl = 'http://localhost:5171/';
+        this.baseUrl = 'http://localhost:7002/';
         this.handleChangeUsername = this.handleChangeUsername.bind(this);
         this.handleChangePassword = this.handleChangePassword.bind(this);
 
@@ -72,44 +72,44 @@ class Login extends Component {
         }
 
         if (flag) {
-            let url = this.baseUrl+ 'users/login';
+            let url = this.baseUrl+ 'login';
             let userAuthInfo = {};
             userAuthInfo["username"] = username;
             userAuthInfo["password"] = password;
-            // axios.post(url, userAuthInfo) 
-            //     .then((response)=>{
-            //         //  console.log(response);
-            //          let data = response.data.data;
-            //          // console.log("data",data)
-            //          if(data){
-            //             console.log("successfully login with ", data.username);
-            //             this.cookies.set('userInfo', data, { path: '/' });
-            //             this.props.loginHandler(data);
-            //             this.setState({
-            //                 login:true
-            //             })
-            //          }
-            //     })
-            //     .catch( (error) => {
-            //         let {errorType} = error.response.data;
-            //         console.log(errorType);
-            //         if(errorType === 0){
-            //             this.setState({
-            //                 usernameError: "Couldn't find your Leam account"
-            //             })
-            //         }else if(errorType === 1){
-            //             this.setState({
-            //                 passwordError: "Password incorrect"
-            //             })
-            //         }
-            //     });
+            // console.log("userAuthInfo: ", userAuthInfo)
+            axios.post(url, userAuthInfo) 
+                .then((response)=>{
+                     console.log(response);
+                     let data = response.data;
+                     if(data){
+                        console.log("successfully login with ", data.username);
+                        this.cookies.set('userInfo', data, { path: '/' });
+                        this.props.loginHandler(data);
+                        this.setState({
+                            login:true
+                        })
+                     }
+                })
+                .catch( (error) => {
+                    let {errorType} = error.response.data;
+                    console.log(errorType);
+                    if(errorType === 0){
+                        this.setState({
+                            usernameError: "Couldn't find your Leam account"
+                        })
+                    }else if(errorType === 1){
+                        this.setState({
+                            passwordError: "Password incorrect"
+                        })
+                    }
+                });
 
             // console.log("user userAuthInfo",userAuthInfo)
-            this.cookies.set('userInfo', userAuthInfo, { path: '/' });
-            this.props.loginHandler(userAuthInfo);
-            this.setState({
-                login:true
-            })
+            // this.cookies.set('userInfo', userAuthInfo, { path: '/' });
+            // this.props.loginHandler(userAuthInfo);
+            // this.setState({
+            //     login:true
+            // })
 
         }
     }
