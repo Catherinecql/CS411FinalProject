@@ -89,7 +89,7 @@ class Header extends Component {
 				          active={activeItem === 'Chat'}
 				          onClick={this.handleItemClick}
 				        >
-				          Chat
+				          <Link to="/ChatRoom">ChatRoom</Link>
 				        </Menu.Item>
      				 </Menu>
 				</div>

@@ -92,6 +92,8 @@ class Personalized extends Component {
 	            	grad_sem: grad_sem,
 	            	pendingGrad_sem:grad_sem,
 	            	pendingMajor:major
+
+                    
 	            })
 	        })
 	        .catch( (error) =>{
