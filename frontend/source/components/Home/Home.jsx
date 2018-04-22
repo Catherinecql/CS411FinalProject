@@ -3,6 +3,7 @@ import {Header,Menu,Container,Segment,Card,Button,Icon,Input,Form, Message} from
 import {BrowserRouter as Router, Route, Link,browserHistory,Redirect} from 'react-router-dom';
 import axios from 'axios';
 import styles from './Home.scss'
+import Cookies from 'universal-cookie';
 
 class Home extends Component {
 	constructor(props) {
@@ -28,6 +29,7 @@ class Home extends Component {
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleLogin = this.handleLogin.bind(this);
 		this.baseUrl = 'http://localhost:7002'
+        this.cookies = new Cookies();
 	}
 
 	handleChange(event,{name,value}){
@@ -126,7 +128,9 @@ class Home extends Component {
     		  confirmPwd,
     		  confirmPasswordError,
     		  email,
-    		  register} = this.state;
+    		  register
+        } = this.state;
+        const userInfo = this.cookies.get('userInfo')||null;
     	let registerInputField =(
             <div>
                 <Input  className="inputLogin"  
@@ -190,9 +194,11 @@ class Home extends Component {
         )
 
     	if(register){
-            return(<Redirect to={{pathname:'/Login'
-        }}  push />)
+            return(<Redirect to={{pathname:'/Login'}}  push />)
+        }else if(userInfo){
+            return(<Redirect to={{pathname:'/EZSection'}} push />)
         }
+
         return(
             <div className="Home">
 	            <Segment className="Register">

@@ -82,8 +82,11 @@ class Login extends Component {
                      console.log(response);
                      let data = response.data;
                      if(data){
-                        console.log("successfully login with ", data.username);
-                        this.cookies.set('userInfo', data, { path: '/' });
+                        console.log(data)
+
+
+                        console.log("successfully login with ", userAuthInfo.username);
+                        this.cookies.set('userInfo', userAuthInfo, { path: '/' });
                         this.props.loginHandler(data);
                         this.setState({
                             login:true
@@ -95,21 +98,14 @@ class Login extends Component {
                     console.log(errorType);
                     if(errorType === 0){
                         this.setState({
-                            usernameError: "Couldn't find your Leam account"
+                            usernameError: "The username does not exist!"
                         })
                     }else if(errorType === 1){
                         this.setState({
-                            passwordError: "Password incorrect"
+                            passwordError: "Password incorrect!"
                         })
                     }
                 });
-
-            // console.log("user userAuthInfo",userAuthInfo)
-            // this.cookies.set('userInfo', userAuthInfo, { path: '/' });
-            // this.props.loginHandler(userAuthInfo);
-            // this.setState({
-            //     login:true
-            // })
 
         }
     }
@@ -117,7 +113,7 @@ class Login extends Component {
 
     render(){
         const{usernameError,passwordError,errorMessage,input,login} = this.state;
-       
+
         let loginInputField =(
             <div>
                 <input  className="inputLogin"  
