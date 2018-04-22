@@ -89,12 +89,6 @@ class Home extends Component {
             axios.post(url, userAuthInfo) 
                 .then((response)=>{
                      console.log(response);
-                     // let data = response;
-                     // console.log("data",data)
-                     // if(data){
-                     //    console.log("successfully register with ", data.username);
-                     //    // this.cookies.set('userInfo', data, { path: '/' });
-                     //    // this.props.loginHandler(data);
                         this.setState({
                             register:true
                         })
@@ -103,15 +97,6 @@ class Home extends Component {
                 .catch( (error) => {
                     // let {errorType} = error.response.data;
                     console.log(error);
-                    // if(errorType === 0){
-                    //     this.setState({
-                    //         usernameError: "Couldn't find your Leam account"
-                    //     })
-                    // }else if(errorType === 1){
-                    //     this.setState({
-                    //         passwordError: "Password incorrect"
-                    //     })
-                    // }
                 });
         }
     }
