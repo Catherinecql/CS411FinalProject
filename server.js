@@ -385,17 +385,20 @@ app.get('/getProfessorsCount/:course_department/:course_number', function (req, 
 
 var port = process.env.PORT || 7002
 io.on('connection', function(socket){
-  console.log('a user connected')
-  socket.on('message', function(msg){
-  	io.emit('message', msg)
-  })
+	// console.log('a user connected')
+	socket.on('message', function(msg){
+	   io.emit('message', msg)
+	})
+	socket.on('users', function(username){
+	   console.log(username)
+	   io.emit('users', username)
+	})
 })
 
 
 // app.listen(port)
 
 http.listen(port, function(){
-  console.log(port)
+  	console.log('Server running on port ' + port);
 })
 
-console.log('Server running on port ' + port);
