@@ -1,6 +1,9 @@
 .ChatRoom{
 	// position:absolute;
-
+	.ChatTitle{
+		color: Skyblue;
+		text-align: center;
+	}
     .msg{
     	padding:10px;
     	display: flex;
