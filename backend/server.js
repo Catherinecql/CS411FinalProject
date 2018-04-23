@@ -309,7 +309,7 @@ app.get('/getNextSemProfessors/:course_department/:course_number', function (req
 			res.status(403).send(err_message);
 		} else if(result.length == 0) {
 			var err_message = "Error: No records found for past section of this course.";
-			res.status(403).send(err_message);
+			res.status(401).send(err_message);
 		}
 		else {
 			console.log(result)
