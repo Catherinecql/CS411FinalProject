@@ -23,8 +23,8 @@ class Login extends Component {
             login:false,     
         };
 
-        // this.baseUrl = 'http://104.236.255.229:5171/';
-        // this.baseUrl = 'http://localhost:5171/';
+        // this.baseUrl = 'https://mysterious-meadow-13337.herokuapp.com/';
+        this.baseUrl = 'http://localhost:7002/';
         this.handleChangeUsername = this.handleChangeUsername.bind(this);
         this.handleChangePassword = this.handleChangePassword.bind(this);
 
@@ -72,50 +72,45 @@ class Login extends Component {
         }
 
         if (flag) {
-            let url = this.baseUrl+ 'users/login';
+            let url = this.baseUrl+ 'login';
             let userAuthInfo = {};
             userAuthInfo["username"] = username;
             userAuthInfo["password"] = password;
-            console.log("user userAuthInfo",userAuthInfo)
-            this.cookies.set('userInfo', userAuthInfo, { path: '/' });
-            this.props.loginHandler(userAuthInfo);
-            this.setState({
-                login:true
-            })
-            // axios.post(url, userAuthInfo) 
-            //     .then((response)=>{
-            //         //  console.log(response);
-            //          let data = response.data.data;
-            //          // console.log("data",data)
-            //          if(data){
-            //             console.log("successfully login with ", data.username);
-            //             this.cookies.set('userInfo', data, { path: '/' });
-            //             this.props.loginHandler(data);
-            //             this.setState({
-            //                 login:true
-            //             })
-            //          }
-            //     })
-            //     .catch( (error) => {
-            //         let {errorType} = error.response.data;
-            //         console.log(errorType);
-            //         if(errorType === 0){
-            //             this.setState({
-            //                 usernameError: "Couldn't find your Leam account"
-            //             })
-            //         }else if(errorType === 1){
-            //             this.setState({
-            //                 passwordError: "Password incorrect"
-            //             })
-            //         }
-            //     });
+            // console.log("userAuthInfo: ", userAuthInfo)
+            axios.post(url, userAuthInfo) 
+                .then((response)=>{
+                     // console.log(response);
+                     let data = response.data;
+                     if(data){
+                        // console.log("successfully login with ", userAuthInfo.username);
+                        this.cookies.set('userInfo', userAuthInfo, { path: '/' });
+                        this.props.loginHandler(data);
+                        this.setState({
+                            login:true
+                        })
+                     }
+                })
+                .catch( (error) => {
+                    let {errorType} = error.response.data;
+                    // console.log(errorType);
+                    if(errorType === 0){
+                        this.setState({
+                            usernameError: "The username does not exist!"
+                        })
+                    }else if(errorType === 1){
+                        this.setState({
+                            passwordError: "Password incorrect!"
+                        })
+                    }
+                });
+
         }
     }
 
 
     render(){
         const{usernameError,passwordError,errorMessage,input,login} = this.state;
-       
+
         let loginInputField =(
             <div>
                 <input  className="inputLogin"  
@@ -163,6 +158,10 @@ class Login extends Component {
                         or
                         <span className="addBold"> Password </span>
                         ?
+                    </div>
+                    <div  className="field loginText"> Don't have an account?
+                        <span className="addBold"> <Link to="/">Register</Link> </span>
+
                     </div>
 
                 </Form>
