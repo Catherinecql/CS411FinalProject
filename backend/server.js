@@ -44,10 +44,7 @@ app.post('/login', (req, res) => {
     var username = req.body.username;
     var input_password = req.body.password?req.body.password:"";
     console.log("input_password", input_password)
-    // console.log(bcrypt.hashSync(input_password,10))
     connection.query("select password from User WHERE username = '" + username + "';",function (error, result,fields) {
-    	// console.log("error", error)
-    	// console.log("result",result)
 		if(error) {
 			let err_message = "Error: Login";
 			res.status(403).send(err_message);
@@ -65,10 +62,7 @@ app.post('/login', (req, res) => {
 			res.status(200).send(message);
 		}
 		else {
-			// console.log(bcrypt.compareSync(input_password,result[0].password))
 			let err_message = "Error: Login failed: Wrong password.";
-			// console.log(result[0].password);
-			// console.log(input_password);
 			res.status(401).send({
 				errorType:1
 			});
@@ -458,9 +452,6 @@ io.on('connection', function(socket){
 	   io.emit('users', username)
 	})
 })
-
-
-// app.listen(port)
 
 http.listen(port, function(){
   	console.log('Server running on port ' + port);
