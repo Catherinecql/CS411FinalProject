@@ -13,6 +13,9 @@ const requiredCourse = [
     "title": "CS233"
   },
   {
+    "title": "CS357"
+  }, 
+  {
     "title": "CS241"
   },
   {

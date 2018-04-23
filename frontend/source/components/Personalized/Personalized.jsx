@@ -20,6 +20,7 @@ class Personalized extends Component {
 			editElective:false,
 			addElective:'',
 			active:[],
+            pendingActive: [],
 			requiredCourse:[],
 			electiveCourse:[]
 
@@ -28,6 +29,7 @@ class Personalized extends Component {
 		this.cookies = new Cookies();
 		this.handleLogout = this.handleLogout.bind(this);
 		this.baseUrl = 'http://localhost:7002'
+        // this.baseUrl = 'https://mysterious-meadow-13337.herokuapp.com/'
 
 
 		this.saveClickHandle = this.saveClickHandle.bind(this);
@@ -38,7 +40,7 @@ class Personalized extends Component {
         this.updateNewElective = this.updateNewElective.bind(this);
         this.handleChange = this.handleChange.bind(this);
 
-
+        this.LabelClickHandler = this.LabelClickHandler.bind(this)
         this.handleDeleteElectives = this.handleDeleteElectives.bind(this);
 	}
 
@@ -49,12 +51,11 @@ class Personalized extends Component {
     }
 
     componentWilMount(){
-        // console.log("new added" + this.props)
         this.updateNew();
         this.updateNewElective();
     }
+
 	componentWillReceiveProps(nextProps){
-        // console.log("componentWillReceiveProps")
         this.handleLogin();
         if(JSON.stringify(nextProps) != JSON.stringify(this.props)){
             if(nextProps.userInfo){
@@ -76,12 +77,11 @@ class Personalized extends Component {
     	this.setState({
     		requiredCourse:requiredCourses
     	})
+
     	const userInfo = this.cookies.get('userInfo')||null
     	const username = userInfo?userInfo.username:null;
 
     	let majorInfoUrl = this.baseUrl  + '/getstudentinfo/' + username
-    	// console.log(majorInfoUrl)
-        // console.log("code here")
         axios.get(majorInfoUrl)
 	        .then((res) =>{
 	            // console.log(res.data[0])
@@ -94,6 +94,7 @@ class Personalized extends Component {
 	            	pendingGrad_sem:grad_sem,
 	            	pendingMajor:major
 
+
 	            })
 	        })
 	        .catch( (error) =>{
@@ -104,58 +105,28 @@ class Personalized extends Component {
 	    console.log(requriedInfoUrl)
 	    axios.get(requriedInfoUrl)
 	    	.then((res) => {
-	    		let requriedCourseTaken = res.data[0].courses_taken
-	    		console.log(requriedCourseTaken)
-
-
+	    		let requiredCourseTaken = res.data
+	    		let activeArr = [];
+	    		let temp = requiredCourseTaken.split(',')
+	    		for (let i = 0; i < requiredCourses.length; i++){
+                    // console.log(requiredCourse[i])
+                    let title = requiredCourse[i].title
+                    if(temp.includes(title)){
+                        activeArr.push(true)
+                    }else{
+                        activeArr.push(false)
+                    }
+                    this.setState({
+                        active: activeArr,
+                        pendingActive:activeArr
+                    })
+	    			
+	    		}
+                console.log("required",activeArr)
 	    	})
 	    	.catch((error)=>{
 	    		console.log(error)
 	    	})
-
-
-	    
-
-            // const pendingAccounts = res.data;
-            // const addLabels = _.filter(addLabel);
-            // let activeArr = [];
-            // let profileLabels = [];
-
-        //     pendingAccounts.map((element,i) =>{
-        //         // console.log(i);
-        //         // console.log(element.labels)
-        //         // this.state.addProfileLabels.push(element.labels);
-        //         profileLabels.push(element.labels);
-        //         let arr=[]
-        //         for (let j = 0; j < addLabels.length; j++){
-        //             // console.log(j)
-        //             // console.log(addLabels[j].title) 
-        //             // console.log(element.labels.includes(addLabels[j].title));
-        //             if(element.labels){
-        //                 let labelname = addLabels[j].title;
-        //                 // console.log(labelname)
-        //                 // console.log(JSON.parse(element.labels))
-        //                 // console.log(element.labels.labelname)
-        //                 if(element.labels.labelname){
-        //                     arr.push(true);
-        //                 }else{
-        //                     arr.push(false);
-        //                 }
-        //             }  
-        //             // console.log(arr) 
-        //         }
-        //         // console.log(arr);
-        //         // this.state.active.push(arr);
-        //         activeArr.push(arr);
-        //     })
-        //     this.setState({
-        //         major: res.data,
-        //         addLabels: _.filter(addLabel),
-        //         active: activeArr,
-        //         addProfileLabels: profileLabels
-        //     })
-
-        // })
     }
 
     updateNewElective(){
@@ -204,16 +175,11 @@ class Personalized extends Component {
 	}
 
 	handleChange(event,{name,value}){
-        // console.log(event)
-        // console.log(event.value);
-        console.log("value",value)
-        console.log("name",[name])
         this.setState({ [name]: value })
         
     }  
 
 	handleLogout(){
-    	console.log("handleLogout")
         this.cookies.remove('userInfo', { path: '/' });
         this.setState({ userInfo: null });
         this.setState({
@@ -262,39 +228,62 @@ class Personalized extends Component {
 	            .catch((err)=>{
 	                console.log(err)
 	            })
-	    }
-
-
+	    }else if(value.value == 2){
+            const{pendingActive} = this.state
+            let url = this.baseUrl + '/updatecourses';
+            let newUserInfo = {}
+            newUserInfo["username"] =  userInfo.username;
+            let newRequired = []
+            for(let i = 0; i < pendingActive.length; i++){
+                if(pendingActive[i]){
+                    newRequired.push(requiredCourse[i].title)
+                }
+            }
+            
+            newUserInfo["courses_taken"] =  newRequired;
+            newRequired.toString()
+            console.log("newRequired", newRequired)
+            axios.put(url,newUserInfo)
+                .then((res)=>{
+                    this.setState({
+                        editRequired:false,
+                        pendingActive:''
+                    })
+                    this.updateNew();
+                })
+                .catch((err)=>{
+                    console.log(err)
+                })
+        }
     }
 
     cancelClickHandle(e,value){
         const {edit} = this.state;
-        
         if(value.value == 1){
-    		// console.log("edit basic info")
     		this.setState({
             	edit:false
        	 	})
     	}else if (value.value == 2){
-    		// console.log("edit requried courses")
+            const{pendingActive,active} = this.state
+            let pending = active.slice(0);
     		this.setState({
-            	editRequired:false
+            	editRequired:false,
+                pendingActive:pending
        	 	})
     	}else{
     		this.setState({
-            	editElective:false
+            	editElective:false,
+                addElective:''
+
        	 	})
     	}
     }
     editClickHandle(e,value){
-    	console.log("editClickHandle", value.value)
     	if(value.value == 1){
-    		// console.log("edit basic info")
     		this.setState({
             	edit:true
        	 	})
     	}else if (value.value == 2){
-    		// console.log("edit requried courses")
     		this.setState({
             	editRequired:true
        	 	})
@@ -302,32 +291,33 @@ class Personalized extends Component {
     		this.setState({
             	editElective:true
        	 	})
-    	}
-        
+    	}      
+    }
+
+
+    LabelClickHandler(index,event){
+        const{pendingActive} = this.state
+        let arr = pendingActive.slice(0)
+        arr[index] = !arr[index]
+        this.setState({
+            pendingActive:arr
+        })
     }
 
     handleDeleteElectives(e,value){
     	const userInfo = this.cookies.get('userInfo')||null
 		const username = userInfo?userInfo.username:null;
-
     	const{electiveCourse} = this.state
-    	console.log("handleDeleteElectives", value.value)
     	let index = value.value
-    	console.log(electiveCourse[index])
-
     	let userAuthInfo = {}
 		userAuthInfo["username"] = username;
 		userAuthInfo["elective_course"] = electiveCourse[index]
     	let url = this.baseUrl + '/deleteelective/' 
     	axios.delete(url, {data:userAuthInfo}) 
 	        .then((response)=>{
-	            // console.log(response);
-	            // this.handleLogout();
 	            this.updateNewElective()
-
 	        })
 	        .catch( (error) => {
-	            // let {errorType} = error.response.data;
 	            console.log(error);
 	        });
 
@@ -358,14 +348,6 @@ class Personalized extends Component {
         const editDisplayElective = editElective? "":"none";
         const editHideElective = editElective? "none":"";
 
-        // console.log("elective:",electiveCourse);
-
-        // requiredCourse.map((label,j)=>{
-        // 	console.log(label)
-        // }
-        // )
-
-
     	let basicUserInfo  = (
     		<div>
                 <Grid columns={2}>
@@ -383,9 +365,7 @@ class Personalized extends Component {
                                   <span className="title">grad_sem:&nbsp; </span>
                                   <span className="text" style={{display:editHide}}>{grad_sem}</span>
                                   <Input name="pendingGrad_sem" value={pendingGrad_sem} style={{display:editDisplay}} onChange={this.handleChange}></Input>
-                            </div>
-
-        
+                            </div>       
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
@@ -405,11 +385,10 @@ class Personalized extends Component {
                     <div className="header">
                             {requiredCourse.map((label,j) =>
                                 <Button key={j} className="labelbutton" value ={j}  
-                                		// active={this.state.active[i][j]} 
-                                		// onClick={this.LabelClickHandler.bind(this,i,j)
-                                		color = "teal"
+                                		onClick={this.LabelClickHandler.bind(this,j)}
+                                		color = {this.state.pendingActive[j] ? "teal" : null}
                                 		disabled={!editRequired}
-                                    // color={this.state.active[i][j] ? "orange" : null}
+                                        active = {this.state.pendingActive[j]}
                                     >
                                 {label.title}
                                 </Button>
@@ -430,12 +409,9 @@ class Personalized extends Component {
                     <div className="header">
                             {electiveCourse.map((label,j) =>
                                 <Button key={j} className="labelbutton" value ={j}  
-                                		// active={this.state.active[i][j]} 
-                                		// onClick={this.LabelClickHandler.bind(this,i,j)
                                 		color = "purple"
                                 		disabled={!editElective}
                                 		onClick={this.handleDeleteElectives}
-                                    // color={this.state.active[i][j] ? "orange" : null}
                                     >
                                 {label}
                                 </Button>
@@ -447,10 +423,14 @@ class Personalized extends Component {
                      <Button primary  value = '3' style={{display:editHideElective}} onClick={this.editClickHandle}>Edit</Button>
                 </div>
                 <div className="buttons">
-                	<div className="grad_sem row">
-                        <Button positive value = '3' style={{display:editDisplayElective}} onClick={this.saveClickHandle}>AddCourse</Button>        	
+                	<div className="grad_sem row">      	
                         <span className="text" style={{display:editHideElective}}>{addElective}</span>
-                        <Input name="addElective" value={addElective} style={{display:editDisplayElective}} onChange={this.handleChange}></Input>
+                        <Input className = "addelective" name="addElective" value={addElective} style={{display:editDisplayElective}} onChange={this.handleChange}></Input>
+                        <Button positive value = '3' 
+                                style={{display:editDisplayElective}} 
+                                onClick={this.saveClickHandle}>
+                                AddCourse
+                        </Button>  
                     </div>
                     
                 </div>
@@ -464,11 +444,8 @@ class Personalized extends Component {
         return(
             <div className="Personalized">
                 <h1>Personalized Page</h1>
-                <div>
-				    
+                <div>	    
 				    <Segment color='orange'>
-
-
 				    	<h3>Tell us about yourself</h3>
 				    	{basicUserInfo}
 				    </Segment>
@@ -477,13 +454,10 @@ class Personalized extends Component {
 				    	<h3>Select the required course you have taken</h3>
 				    	{requiredCourseInfo}
 				    </Segment>
-
 				    <Segment color='violet'>
 				    	<h3>Select the elective course you have taken</h3>
 				    	{electiveCourseInfo}
-				    </Segment>
-				   
-				   
+				    </Segment>   
 				</div>
 				<div className="delete">
     				<Button  negative onClick={this.handleClickDelete}>Delete the Account</Button>

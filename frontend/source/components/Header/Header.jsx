@@ -23,7 +23,7 @@ class Header extends Component {
     }
 
     componentWillReceiveProps(nextProps){
-        console.log("componentWillReceiveProps")
+        // console.log("componentWillReceiveProps")
         this.handleLogin();
         if(JSON.stringify(nextProps) != JSON.stringify(this.props)){
             if(nextProps.userInfo){
@@ -46,7 +46,7 @@ class Header extends Component {
     }
 
     handleLogout(){
-    	console.log("handleLogout")
+    	// console.log("handleLogout")
         this.cookies.remove('userInfo', { path: '/' });
         this.setState({ userInfo: null });
         this.setState({
@@ -60,8 +60,8 @@ class Header extends Component {
 
 	render(){
 		const { activeItem,userInfo } = this.state
-		console.log(this.props)
-		
+		// console.log(this.props)
+		// console.log(userInfo)
         const username = userInfo?userInfo.username:null;
     
 		return(
@@ -81,7 +81,7 @@ class Header extends Component {
 				          active={activeItem === 'Full Schedule Analysis '}
 				          onClick={this.handleItemClick}
 				        >
-				          <Link to="/FullScheduleAnalysis">Full Schedule Analysis</Link>
+				          <Link to="/FullScheduleAnalysis">Recommend me</Link>
 				        </Menu.Item>
 
 				        <Menu.Item
@@ -89,7 +89,7 @@ class Header extends Component {
 				          active={activeItem === 'Chat'}
 				          onClick={this.handleItemClick}
 				        >
-				          Chat
+				          <Link to="/ChatRoom">ChatRoom</Link>
 				        </Menu.Item>
      				 </Menu>
 				</div>
