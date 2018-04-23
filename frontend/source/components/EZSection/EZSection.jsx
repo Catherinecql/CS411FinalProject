@@ -51,7 +51,7 @@ class EZSection extends Component
 		this.handleSubmitgpa = this.handleSubmitgpa.bind(this);
 		this.handleSelectChange = this.handleSelectChange.bind(this);
 		// this.base_url = 'http://localhost:7002'
-		this.baseUrl = 'https://mysterious-meadow-13337.herokuapp.com'
+		this.base_url = 'https://mysterious-meadow-13337.herokuapp.com'
 
 	}
 
@@ -162,6 +162,7 @@ class EZSection extends Component
 
   		console.log("gpa",gpa)
   		let current_url = this.base_url + '/getMinGPACourses/CS/' + gpa
+  		console.log(current_url)
   	// 	//"https://mysterious-meadow-13337.herokuapp.com/getNextSemProfessors/"
   		axios.get(current_url)
 			.then((response) =>
