@@ -29,6 +29,7 @@ class Personalized extends Component {
 		this.cookies = new Cookies();
 		this.handleLogout = this.handleLogout.bind(this);
 		this.baseUrl = 'http://localhost:7002'
+        // this.baseUrl = 'https://mysterious-meadow-13337.herokuapp.com/'
 
 
 		this.saveClickHandle = this.saveClickHandle.bind(this);
@@ -49,7 +50,7 @@ class Personalized extends Component {
         this.updateNewElective();
     }
 
-    componentWilMount(){
+    componentWillMount(){
         this.updateNew();
         this.updateNewElective();
     }
@@ -92,6 +93,8 @@ class Personalized extends Component {
 	            	grad_sem: grad_sem,
 	            	pendingGrad_sem:grad_sem,
 	            	pendingMajor:major
+
+
 	            })
 	        })
 	        .catch( (error) =>{

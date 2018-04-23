@@ -1,8 +1,9 @@
 {
-  "name": "",
+  "name": "server",
   "version": "1.0.0",
   "description": "CS411FinalProject",
   "authors": "Qinglin Chen",
+  "main": "server.js",
   "scripts": {
     "start": "nodemon --exec node server.js"
   },
@@ -12,6 +13,8 @@
     "express": "^4.15.3",
     "mysql": "^2.15.0",
     "nodemon": "^1.11.0",
-    "npm": "^5.8.0"
+    "npm": "^5.8.0",
+    "socket.io": "^2.1.0",
+    "socket.io-client": "^2.1.0"
   }
 }
