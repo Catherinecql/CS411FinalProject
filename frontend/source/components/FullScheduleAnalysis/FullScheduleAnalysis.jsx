@@ -18,7 +18,7 @@ class FullScheduleAnalysis extends Component {
             gpas:[],
             highestGpaProf:[] 
     	};
-    	this.baseUrl = 'http://localhost:7002'
+    	this.baseUrl = 'https://mysterious-meadow-13337.herokuapp.com'
     	this.cookies = new Cookies();
     }
 
@@ -34,7 +34,14 @@ class FullScheduleAnalysis extends Component {
 	    		let courses = requiredCourseTaken.split(',')
 	    		for (let i = 0; i < requiredCourse.length; i++) {
                     let title = requiredCourse[i].title
-                    if(!courses.includes(title)){
+
+                    if(title == 'CS242/126') {
+                    	if(!courses.includes('CS242') && !courses.includes('CS126')) {
+							left.push('CS242')
+							left.push('CS126')
+                    	}
+                    }
+                    else if(!courses.includes(title)){
                         left.push(title)
                     }
                     this.setState({
