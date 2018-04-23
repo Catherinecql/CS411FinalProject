@@ -28,8 +28,8 @@ class Personalized extends Component {
 		this.handleClickDelete = this.handleClickDelete.bind(this)
 		this.cookies = new Cookies();
 		this.handleLogout = this.handleLogout.bind(this);
-		this.baseUrl = 'http://localhost:7002'
-        // this.baseUrl = 'https://mysterious-meadow-13337.herokuapp.com/'
+		// this.baseUrl = 'http://localhost:7002'
+        this.baseUrl = 'https://mysterious-meadow-13337.herokuapp.com/'
 
 
 		this.saveClickHandle = this.saveClickHandle.bind(this);
