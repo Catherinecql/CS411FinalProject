@@ -427,7 +427,7 @@ app.get('/getAverageGPA/:course_department/:course_number/:professor', function 
 	console.log(sql_query);
 	connection.query(sql_query,function (error, result,fields) {
 		if(error) {
-			var err_message = "Error: getAverageGPA/" + course_department + course_number;
+			var err_message = "Error: getNextSemProfessors/" + course_department + course_number;
 			res.status(403).send(err_message);
 		} else if(result.length == 0) {
 			var err_message = "Error: No records found for past section of this course.";
@@ -439,35 +439,6 @@ app.get('/getAverageGPA/:course_department/:course_number/:professor', function 
 		}
 	})
 });
-
-
-// 10. Get all professors, their GPA and RMP link for a course
-app.get('/getMinGPACourses/:course_department/:minGPA', function (req, res) {
-	var course_department = req.params.course_department;
-	var minGPA = req.params.minGPA;
-
-	var sql_select = "select Professor.name_format1, CourseHistory.gpa as avg, RMPProfile.rmp_link, CourseHistory.course_department, CourseHistory.course_number ";
-	var sql_from = "FROM CourseHistory, Professor, RMPProfile ";
-
-	var sql_where = "WHERE CourseHistory.course_department = '"+course_department+"'";
-	var sql_where2 = " AND CourseHistory.professor_name_format2 = Professor.name_format2";
-	var sql_where3 = " AND RMPProfile.professor_name_format1 = Professor.name_format1 ";
-	var sql_having = "HAVING CourseHistory.gpa >= "+minGPA;
-	var sql_query = sql_select + sql_from + sql_where + sql_where2 + sql_where3 + sql_having;
-
-	console.log(sql_query);
-	connection.query(sql_query,function (error, result,fields){
-		if(error) {
-			var err_message = "Error: getMinGPACourses/" + course_department;
-			res.status(403).send(err_message);
-		}
-		else {
-			console.log(result)
-			res.send(result)
-		}
-	})
-});
-
 
 
 var port = process.env.PORT || 7002
@@ -485,5 +456,4 @@ io.on('connection', function(socket){
 http.listen(port, function(){
   	console.log('Server running on port ' + port);
 })
-
 
