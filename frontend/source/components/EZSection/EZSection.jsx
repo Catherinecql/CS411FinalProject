@@ -123,12 +123,12 @@ class EZSection extends Component
   		axios.get(current_url)
 			.then((response) =>
 				{
-					console.log(response.data[0]);
+					console.log(response.data);
 					//new add:
 					this.setState
 					(
 						{
-							gpaInfo: response.data[0]
+							gpaInfo: response.data
 						}
 					)
 				}
