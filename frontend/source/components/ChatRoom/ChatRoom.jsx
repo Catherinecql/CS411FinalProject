@@ -47,18 +47,28 @@ class ChatRoom extends React.Component {
     	if(!userInfo){
     		return(<Redirect to={{pathname:'/', state:{loggedIn: false}}}  push />)
     	}
+    	const username = userInfo.username
     	console.log(this.state.msg)
     	console.log("join",this.state.users)
 		return(
-			<div>
+			<div className="ChatRoom">
 				<Segment className="room">
 					<div id="messages">
 						{
 							this.state.msg.map((output,j) => {
 								return(
 									<div key={j}>
-										<div> {this.state.users[j]}</div>
-										<Label pointing='left'>{output}</Label>
+										{ username == this.state.users[j] ?
+											(<div className="self">
+												<div> {this.state.users[j]}</div>
+												<Label pointing='right'>{output}</Label>
+											</div>)
+										:
+											(<div className="other">
+												<div> {this.state.users[j]}</div>
+												<Label pointing='left'>{output}</Label>
+											</div>)
+										}
 									</div>
 								)
 							})
