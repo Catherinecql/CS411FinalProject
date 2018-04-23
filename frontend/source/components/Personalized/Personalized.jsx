@@ -81,7 +81,7 @@ class Personalized extends Component {
     	const userInfo = this.cookies.get('userInfo')||null
     	const username = userInfo?userInfo.username:null;
 
-    	let majorInfoUrl = this.baseUrl  + '/getstudentinfo/' + username
+    	let majorInfoUrl = this.baseUrl  + 'getstudentinfo/' + username
         axios.get(majorInfoUrl)
 	        .then((res) =>{
 	            // console.log(res.data[0])
@@ -101,7 +101,7 @@ class Personalized extends Component {
 	        	console.log(error)
 	        })
 
-	    let requriedInfoUrl = this.baseUrl + '/gettakenclasses/' + username
+	    let requriedInfoUrl = this.baseUrl + 'gettakenclasses/' + username
 	    console.log(requriedInfoUrl)
 	    axios.get(requriedInfoUrl)
 	    	.then((res) => {
@@ -132,7 +132,7 @@ class Personalized extends Component {
     updateNewElective(){
     	const userInfo = this.cookies.get('userInfo')||null
     	const username = userInfo?userInfo.username:null;
-    	let electiveInfoUrl = this.baseUrl + '/gettakenelectives/' + username;
+    	let electiveInfoUrl = this.baseUrl + 'gettakenelectives/' + username;
 	    axios.get(electiveInfoUrl)
 	    	.then((res) => {
 
@@ -160,7 +160,7 @@ class Personalized extends Component {
 		userAuthInfo["username"] = username;
 
 		console.log("delete the account",userAuthInfo)
-		let url = this.baseUrl + '/deleteuser'
+		let url = this.baseUrl + 'deleteuser'
 
 	    axios.delete(url, {data:userAuthInfo}) 
 	        .then((response)=>{
@@ -192,7 +192,7 @@ class Personalized extends Component {
 		const userInfo = this.cookies.get('userInfo')||null;
 		if(value.value == 1){
 			const{major,grad_sem,pendingGrad_sem,pendingMajor} = this.state
-		    let url = this.baseUrl+ '/updatemajgradsem ';
+		    let url = this.baseUrl+ 'updatemajgradsem ';
 		    let newUserInfo = {}
 		    newUserInfo["username"] =  userInfo.username;
 		    newUserInfo["major"] = pendingMajor;
@@ -230,7 +230,7 @@ class Personalized extends Component {
 	            })
 	    }else if(value.value == 2){
             const{pendingActive} = this.state
-            let url = this.baseUrl + '/updatecourses';
+            let url = this.baseUrl + 'updatecourses';
             let newUserInfo = {}
             newUserInfo["username"] =  userInfo.username;
             let newRequired = []
@@ -312,7 +312,7 @@ class Personalized extends Component {
     	let userAuthInfo = {}
 		userAuthInfo["username"] = username;
 		userAuthInfo["elective_course"] = electiveCourse[index]
-    	let url = this.baseUrl + '/deleteelective/' 
+    	let url = this.baseUrl + 'deleteelective/' 
     	axios.delete(url, {data:userAuthInfo}) 
 	        .then((response)=>{
 	            this.updateNewElective()
