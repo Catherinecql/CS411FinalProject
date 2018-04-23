@@ -75,6 +75,7 @@ class ChatRoom extends React.Component {
     	// console.log("join",this.state.users)
 		return(
 			<div className="ChatRoom">
+				<h1 className = "ChatTitle"> Chat to get advice! </h1>
 				<Segment className="room">
 						<StayScrolled className="messages">
 							{
