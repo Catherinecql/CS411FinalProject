@@ -14,6 +14,7 @@ const getOptions = () => _.times(3, () =>
   }
   return { key: name, text: name, value:name }
 })
+
 const inputParsers = 
 {
   course(input) 
@@ -30,14 +31,29 @@ class EZSection extends Component
 		this.state = {
 			sectionInfo   : '',
 			error: '',
-			searchbyItem:''
+			searchbyItem:'',
+			department: '',
+			Course_NO:'',
+			submittedDepartment:'',
+			submittedCourse:''
 		}
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleChange = this.handleChange.bind(this);
 
 	}
 
+	handleChange(event,{name,value}){
+        // console.log(event)
+        // console.log(event.value);
+        // console.log("value",value)
+        // console.log("name",[name])
+        this.setState({ [name]: value })
+        
+    }  
+
   	handleSubmit(event)
   	{
+  		const{department,Course_NO} = this.state
   		event.preventDefault(); 
   		this.setState
   		(
@@ -46,22 +62,30 @@ class EZSection extends Component
   				error : ''
   			}
   		)
-  		const form = event.target;
-  		const data = new FormData(event.target); 
-  		let current_url = "http://localhost:7002/getNextSemProfessors/"//"https://mysterious-meadow-13337.herokuapp.com/getNextSemProfessors/"
-  		for (let courseInfo of data.keys())
-  		{
-  			const input = form.elements[courseInfo];
-  			const parserCourse = input.dataset.parse; 
+  	// 	const form = event.target;
+  	// 	const data = new FormData(event.target); 
+  	// 	let current_url = "http://localhost:7002/getNextSemProfessors/"//"https://mysterious-meadow-13337.herokuapp.com/getNextSemProfessors/"
+  	// 	for (let courseInfo of data.keys())
+  	// 	{
+  	// 		const input = form.elements[courseInfo];
+  	// 		const parserCourse = input.dataset.parse; 
 
-  			if (parserCourse)
-  			{ 
-  				const parser = inputParsers[parserCourse];
-        		const parsedValue = parser(data.get(courseInfo));
-        		data.set(courseInfo, parsedValue);
-        		current_url = current_url + parsedValue + "/"
-  			}
-  		}
+  	// 		if (parserCourse)
+  	// 		{ 
+  	// 			const parser = inputParsers[parserCourse];
+   //      		const parsedValue = parser(data.get(courseInfo));
+   //      		data.set(courseInfo, parsedValue);
+   //      		current_url = current_url + parsedValue + "/"
+  	// 		}
+  	// 	}
+  		console.log("department",department)
+  		console.log("Course_NO",Course_NO)
+  		const input = department+Course_NO
+  		console.log("input",input)
+  		let base_url = "https://localhost:7002/"
+  		// let base_url = "https://mysterious-meadow-13337.herokuapp.com/getNextSemProfessors/"
+  		let current_url = base_url + input
+  		//"https://mysterious-meadow-13337.herokuapp.com/getNextSemProfessors/"
   		axios.get(current_url)
 			.then((response) =>
 				{
@@ -88,27 +112,29 @@ class EZSection extends Component
   	}
 
     render() {
-    	const { sectionInfo, error} =this.state
-    	console.log("testing",sectionInfo)
-    	console.log(error)
+    	const { sectionInfo, error,department,Course_NO,submittedCourse,submittedDepartment} =this.state
+    	// console.log("testing",sectionInfo)
+    	// console.log(error)
         return(
 	     	<div className = "EZSection">
 
 	            <Form onSubmit={this.handleSubmit}>
 		        	<Form.Group> 
 		        		<Form.Input
-			        	 name ="department" 
-			        	 placeholder = "Enter Department" 
-			        	 type="text" 
-			        	 data-parse = "course"
+				        	 name = 'department' 
+				        	 value = {department}
+				        	 placeholder = "Enter Department" 
+				        	 type="text" 
+				        	 onChange = {this.handleChange}
 			        	 />
 
-			        	<Form.input 
-			        	 name = "Course no." 
-			        	 placeholder = "Enter Course no." 
-			        	 type="text" 
-			        	 data-parse = "course"
-			        	 />
+			        	<Form.Input 
+				        	 name = 'Course_NO'
+				        	 value = {Course_NO}
+				        	 placeholder = "Enter Course no." 
+				        	 type="text" 
+				        	 onChange = {this.handleChange}
+			        	/>
 
 		        		<Form.Button content = "EZPZ!"/>
 		        	</Form.Group>
