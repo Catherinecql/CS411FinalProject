@@ -441,6 +441,38 @@ app.get('/getAverageGPA/:course_department/:course_number/:professor', function 
 });
 
 
+// 10. Get all professors, their GPA and RMP link for a course
+app.get('/getMinGPACourses/:course_department/:minGPA', function (req, res) {
+	var course_department = req.params.course_department;
+	var minGPA = req.params.minGPA;
+
+	var sql_select = "select Professor.name_format1, AVG(CourseHistory.gpa) as avg, RMPProfile.rmp_link ";
+	var sql_from = "FROM CourseHistory, Professor, RMPProfile ";
+
+	var sql_where = "WHERE CourseHistory.course_department = '"+course_department+"'";
+	var sql_where2 = " AND CourseHistory.professor_name_format2 = Professor.name_format2";
+	var sql_where3 = " AND RMPProfile.professor_name_format1 = Professor.name_format1 ";
+
+	var sql_groupby = "GROUP BY CourseHistory.professor_name_format2 ";
+	var sql_having = "HAVING AVG(CourseHistory.gpa) >= "+minGPA;
+
+	var sql_query = sql_select + sql_from + sql_where + sql_where2 + sql_where3 + sql_groupby + sql_having;
+
+	console.log(sql_query);
+	connection.query(sql_query,function (error, result,fields){
+		if(error) {
+			var err_message = "Error: getMinGPAProfessors/" + course_department + course_number;
+			res.status(403).send(err_message);
+		}
+		else {
+			console.log(result)
+			res.send(result)
+		}
+	})
+});
+
+
+
 var port = process.env.PORT || 7002
 io.on('connection', function(socket){
 	// console.log('a user connected')
@@ -453,7 +485,7 @@ io.on('connection', function(socket){
 	})
 })
 
-http.listen(port, function(){
+app.listen(port, function(){
   	console.log('Server running on port ' + port);
 })
 
