@@ -85,3 +85,25 @@ error codes:
 
 
 8. Get all professors, their GPA and RMP link for a course
+
+12. Get next semester's professors and RMK link for a course
+	GET http://localhost:7002/getNextSemProfInfo/CS/374
+	result: [
+    {
+        "name_format2": "Chekuri, Chandra S",
+        "rmp_link": ""
+    },
+    {
+        "name_format2": "Kindratenko, Volodymyr",
+        "rmp_link": "http://www.ratemyprofessors.com/ShowRatings.jsp?tid=1550607"
+    }
+]
+
+13. Get AVG gpa for a professor and a course 
+	GET http://localhost:7002/getAverageGPA/CS/210/Cunningham, Ryan M
+	result: [
+	    {
+	        "AVG(CourseHistory.gpa)": 3
+	    }
+	]
+
