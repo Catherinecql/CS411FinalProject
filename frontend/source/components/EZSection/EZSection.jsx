@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button,Container,Grid,Menu,Dropdown } from 'semantic-ui-react'
+import { Button,Container,Grid,Menu,Dropdown,Input,Segment } from 'semantic-ui-react'
 import {BrowserRouter as Router, Route, Link,browserHistory,Redirect} from 'react-router-dom';
 import ReactDOM from 'react-dom'
 import _ from 'lodash'
@@ -23,8 +23,8 @@ class EZSection extends Component {
 	constructor(props){
 		super(props);
 		this.state = {
-			//search bar
-			searchbyItem:'',
+			sectionInfo:'',
+			searchbyItem:''
 		}
 		this.handleSubmit = this.handleSubmit.bind(this);
 
@@ -51,6 +51,10 @@ class EZSection extends Component {
   		axios.get(current_url)
 			.then((response)=>{
 				console.log(response.data);
+				//new add:
+				this.setState({
+					sectionInfo: response.data[0]
+				})
 			})
 			.catch(error=>{
 				console.log(error)
@@ -59,29 +63,36 @@ class EZSection extends Component {
   	}
 
     render() {
+    	const { sectionInfo} =this.state
+    	console.log("testing",sectionInfo)
         return(
-	    	const { 
-	   			handleSubmit,
-	   		} = this.state
+	     	<div clasName = "EZSection">
 
-            <form onSubmit={this.handleSubmit}>
-	        	<input 
-	        	 name ="department" 
-	        	 placeholder = "Enter Department" 
-	        	 type="text" 
-	        	 data-parse = "course"
-	        	 />
+	            <form onSubmit={this.handleSubmit}>
+		        	<input 
+		        	 name ="department" 
+		        	 placeholder = "Enter Department" 
+		        	 type="text" 
+		        	 data-parse = "course"
+		        	 />
 
-	        	<input 
-	        	 name="Course no." 
-	        	 placeholder = "Enter Course no." 
-	        	 type="text" 
-	        	 data-parse = "course"
-	        	 />
+		        	<input 
+		        	 name="Course no." 
+		        	 placeholder = "Enter Course no." 
+		        	 type="text" 
+		        	 data-parse = "course"
+		        	 />
 
-	        	<button>EZPZ!</button>
-	        </form>
-	        // </div>
+		        	<button>EZPZ!</button>
+		        </form>
+		        { sectionInfo ? 
+			        <Segment>
+			        	<div>Professor: {sectionInfo.name_format1}</div>
+			        </Segment>
+			       : null
+		    	}
+		    </div>
+
         )
     }
 }
