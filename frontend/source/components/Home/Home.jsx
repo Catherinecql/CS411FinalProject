@@ -29,7 +29,7 @@ class Home extends Component {
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleLogin = this.handleLogin.bind(this);
 		// this.baseUrl = 'http://localhost:7002'
-        this.baseUrl = 'https://mysterious-meadow-13337.herokuapp.com/';
+        this.baseUrl = 'https://mysterious-meadow-13337.herokuapp.com';
         this.cookies = new Cookies();
 	}
 
