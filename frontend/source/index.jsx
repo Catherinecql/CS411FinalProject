@@ -11,6 +11,7 @@ import FullScheduleAnalysis from './components/FullScheduleAnalysis/FullSchedule
 import Home from './components/Home/Home.jsx';
 import Login from './components/Login/Login.jsx';
 import Personalized from './components/Personalized/Personalized.jsx'
+import ChatRoom from './components/ChatRoom/ChatRoom.jsx'
 // Include any new stylesheets here
 // Note that components' stylesheets should NOT be included here.
 // They should be 'require'd in their component class file.
@@ -38,6 +39,7 @@ class APP extends Component{
 						<Route exact path="/" component={Home}  />
 						<Route exact path="/Login" render={()=><Login loginHandler={this.loginHandler} />}/>
 						<Route exact path="/Personalized" component={Personalized} loginHandler={this.loginHandler} />
+						<Route exact path="/ChatRoom" component={ChatRoom} loginHandler={this.loginHandler} />
 					</Container>
 				</div>
 			</Router>

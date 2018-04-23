@@ -5,9 +5,12 @@ var bcrypt = require('bcrypt')
 var express = require('express'),
     bodyParser = require('body-parser'),
     mysql = require('mysql');
+   
+
 
 var app = express();
-
+const http= require('http').Server(app);
+const io = require('socket.io')(http);
 // Allow CORS so that backend and frontend could be put on different servers
 var allowCrossDomain = function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -445,6 +448,21 @@ app.get('/getAverageGPA/:course_department/:course_number/:professor', function 
 
 
 var port = process.env.PORT || 7002
+io.on('connection', function(socket){
+	// console.log('a user connected')
+	socket.on('message', function(msg){
+	   io.emit('message', msg)
+	})
+	socket.on('users', function(username){
+	   console.log(username)
+	   io.emit('users', username)
+	})
+})
 
-app.listen(port)
-console.log('Server running on port ' + port);
+
+// app.listen(port)
+
+http.listen(port, function(){
+  	console.log('Server running on port ' + port);
+})
+
