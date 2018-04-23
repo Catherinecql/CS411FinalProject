@@ -107,3 +107,22 @@ error codes:
 	    }
 	]
 
+14. Get 
+	GET http://localhost:7002/getMinGPACourses/CS/3
+	result: [
+    {
+        "name_format1": "Leonard B. Pitt",
+        "avg": "3,8",
+        "rmp_link": "http://www.ratemyprofessors.com/ShowRatings.jsp?tid=215034",
+        "course_department": "CS",
+        "course_number": 100
+    },
+    {
+        "name_format1": "Albert Harris",
+        "avg": "3,54",
+        "rmp_link": "http://www.ratemyprofessors.com/ShowRatings.jsp?tid=2326451",
+        "course_department": "CS",
+        "course_number": 105
+    }
+   	]
+
