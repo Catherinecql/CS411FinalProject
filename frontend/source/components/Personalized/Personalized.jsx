@@ -50,7 +50,7 @@ class Personalized extends Component {
         this.updateNewElective();
     }
 
-    componentWilMount(){
+    componentWillMount(){
         this.updateNew();
         this.updateNewElective();
     }
