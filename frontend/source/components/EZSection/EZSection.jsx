@@ -103,7 +103,7 @@ class EZSection extends Component
 			        	 data-parse = "course"
 			        	 />
 
-			        	<Form.input 
+			        	<Form.Input 
 			        	 name = "Course no." 
 			        	 placeholder = "Enter Course no." 
 			        	 type="text" 
