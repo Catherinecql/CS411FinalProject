@@ -151,12 +151,12 @@ class FullScheduleAnalysis extends Component {
         return(
             <div className="FullScheduleAnalysis">
                 <h1>Recommender</h1>
-                <div>
+                <div className="TableRec">
 			    	<Table celled padded>
 			    		<Table.Header>
 			      			<Table.Row>
 						        <Table.HeaderCell>Course</Table.HeaderCell>
-						        <Table.HeaderCell>Professor</Table.HeaderCell>
+						        <Table.HeaderCell >Professor</Table.HeaderCell>
 						        <Table.HeaderCell>ratemyprofessor.com</Table.HeaderCell>
 						        <Table.HeaderCell>Average GPA</Table.HeaderCell>
 						        <Table.HeaderCell>EZPZ</Table.HeaderCell>
