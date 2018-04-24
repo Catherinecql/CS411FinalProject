@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Header,Menu,Container,Segment,Card,Button,Icon,Input,Form, Message} from 'semantic-ui-react';
+import {Header,Menu,Container,Segment,Card,Button,Icon,Input,Form, Message,Grid} from 'semantic-ui-react';
 import {BrowserRouter as Router, Route, Link,browserHistory,Redirect} from 'react-router-dom';
 import axios from 'axios';
 import styles from './Home.scss'
@@ -187,15 +187,25 @@ class Home extends Component {
 
         return(
             <div className="Home">
-	            <Segment className="Register">
-	                <Form error>
-	                    <div className="field">
-	                        <Header size='large' className="loginHeader">Register</Header>
-	                        {registerInputField}
-	                        <Button className = 'btnlogin' onClick={this.handleSubmit} >Register</Button>
-	                    </div>
-	                </Form>
-	            </Segment>
+                <Grid>
+                    <Grid.Row>
+                        <Grid.Column width={8}>
+                            <img className="logo"src="../../assets/gpa.gif" alt="how to boost your gpa"/>
+                        </Grid.Column>
+                        <Grid.Column className="Register" width={8}>
+                            <Segment>
+                                <Form error>
+                                    <div className="field">
+                                        <Header size='large' className="loginHeader">Register</Header>
+                                            {registerInputField}
+                                        <Button className = 'btnlogin' onClick={this.handleSubmit} >Register</Button>
+                                    </div>
+                                </Form>
+                            </Segment>
+                      </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+                
             </div>
         )
     }
