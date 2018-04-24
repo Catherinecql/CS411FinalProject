@@ -5,17 +5,19 @@
     top: 60%;
     // left: 50%;
     // transform: translate(-50%, -50%);
-
+ //    display: flex;
+	// flex-direction: column;
     .Register{
-    	position: absolute;
-    	top:10%;
-    	left: 20%;
-		margin:20% !important;
+    	padding:10px;
+    	// position: absolute;
+    	// top:10%;
+    	// left: 20%;
+		// margin:20% !important;
 		@media screen and (max-width: 730px){
 			margin:5% !important;
 		}
 		.form{
-			padding:5%;
+			padding:10%;
 		}
 
 		.loginHeader{
@@ -33,6 +35,7 @@
 			float: right;
 			font-size:1.2em;
 			margin-bottom: 30px;
+
 		}
 
 		.loginText{
@@ -44,5 +47,9 @@
 		}
 
 	}
+
+	// .gpa{
+	// 	left: 0%;
+	// }
 
 }
