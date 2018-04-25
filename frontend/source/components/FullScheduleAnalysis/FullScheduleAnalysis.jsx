@@ -36,7 +36,8 @@ class FullScheduleAnalysis extends Component {
                     let title = requiredCourse[i].title
 
                     if(title == 'CS242/126') {
-                    	if(!courses.includes('CS242') && !courses.includes('CS126')) {
+                    	if(!courses.includes('CS242/126')) {
+                            console.log("in not include 242 126")
 							left.push('CS242')
 							left.push('CS126')
                     	}
