@@ -154,11 +154,14 @@ class FullScheduleAnalysis extends Component {
         	}
         }  
 
+        const hasCoursesLeft = (coursesLeft.length == 0)? false : true
+
         console.log(max_gpa)
 
         return(
             <div className="FullScheduleAnalysis">
                 <h1>Recommender</h1>
+                { hasCoursesLeft? (
                 <div className="TableRec">
 			    	<Table celled padded>
 			    		<Table.Header>
@@ -201,10 +204,13 @@ class FullScheduleAnalysis extends Component {
 						)
           				)}
         			</Table.Body>
-
-
  				</Table>
   				</div>
+                ) : (
+                    <div className="allSet">
+                        You're all set with required courses ! :)
+                    </div>
+                )}
             </div>
         )
     }
