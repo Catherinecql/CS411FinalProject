@@ -207,7 +207,7 @@ class FullScheduleAnalysis extends Component {
  				</Table>
   				</div>
                 ) : (
-                    <div className="allSet">
+                    <div className="NoCourse">
                         You're all set with required courses ! :)
                     </div>
                 )}
