@@ -282,13 +282,14 @@ app.get('/getAllProfessors/:course_department/:course_number', function (req, re
 app.get('/getNextSemProfessors/:course_department/:course_number', function (req, res) {
 	var course_department = req.params.course_department;
 	var course_number = req.params.course_number;
+	console.log("here")
+	//CAST(AVG (opening_amt) AS DECIMAL (12,2)) 
+	var sql_select = "select Professor.name_format1, CAST(AVG(CourseHistory2.gpa) AS CHAR(4)) as avg, RMPProfile.rmp_link ";
+	var sql_from = "FROM CourseHistory2, Professor, RMPProfile ";
 
-	var sql_select = "select Professor.name_format1, AVG(CourseHistory.gpa) as avg, RMPProfile.rmp_link ";
-	var sql_from = "FROM CourseHistory, Professor, RMPProfile ";
-
-	var sql_where = "WHERE CourseHistory.course_department = '"+course_department+"'";
-	var sql_where1 = " AND CourseHistory.course_number = '"+course_number+"'";
-	var sql_where2 = " AND CourseHistory.professor_name_format2 = Professor.name_format2";
+	var sql_where = "WHERE CourseHistory2.course_department = '"+course_department+"'";
+	var sql_where1 = " AND CourseHistory2.course_number = '"+course_number+"'";
+	var sql_where2 = " AND CourseHistory2.professor_name_format2 = Professor.name_format2";
 	var sql_where3 = " AND RMPProfile.professor_name_format1 = Professor.name_format1 ";
 
 	var sql_where5 = "WHERE course_department = '"+course_department+"'";
@@ -296,7 +297,7 @@ app.get('/getNextSemProfessors/:course_department/:course_number', function (req
 
 	var sql_where4 = " AND Professor.netid IN (SELECT netid  FROM Offering " + sql_where5 + sql_where6 + ") ";
 
-	var sql_groupby = " GROUP BY CourseHistory.professor_name_format2";
+	var sql_groupby = " GROUP BY CourseHistory2.professor_name_format2";
 
 	var sql_query = sql_select + sql_from + sql_where + sql_where1 + sql_where2 + sql_where3 + sql_where4 + sql_groupby;
 
@@ -322,8 +323,9 @@ app.get('/getMinGPAProfessors/:course_department/:course_number/:minGPA', functi
 	var course_department = req.params.course_department;
 	var course_number = req.params.course_number;
 	var minGPA = req.params.minGPA;
+	console.log("here")
 
-	var sql_select = "select Professor.name_format1, AVG(CourseHistory.gpa) as avg, RMPProfile.rmp_link ";
+	var sql_select = "select Professor.name_format1, AVG(Cast(CourseHistory.gpa as Float)) as avg, RMPProfile.rmp_link ";
 	var sql_from = "FROM CourseHistory, Professor, RMPProfile ";
 
 	var sql_where = "WHERE CourseHistory.course_department = '"+course_department+"'";
