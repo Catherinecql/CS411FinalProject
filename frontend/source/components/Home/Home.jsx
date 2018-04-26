@@ -1,3 +1,5 @@
+/** @author Qinglin Chen
+**/
 import React, { Component } from 'react'
 import {Header,Menu,Container,Segment,Card,Button,Icon,Input,Form, Message,Grid} from 'semantic-ui-react';
 import {BrowserRouter as Router, Route, Link,browserHistory,Redirect} from 'react-router-dom';

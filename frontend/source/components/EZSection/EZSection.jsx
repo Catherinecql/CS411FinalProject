@@ -1,3 +1,5 @@
+/** @author Qinglin Chen
+**/
 import React, { Component } from 'react'
 import { Button,Container,Grid,Menu,Dropdown,Input,Segment,Form,Select} from 'semantic-ui-react'
 import {BrowserRouter as Router, Route, Link,browserHistory,Redirect} from 'react-router-dom';
@@ -276,11 +278,10 @@ class EZSection extends Component
 			        { gpaInfo ? 
 			        	(gpaInfo.map((course,j) =>
 			        		<Segment  key={j}>
-			        			<h2> Average GPA       : {course.avg}</h2>
+			        			<h3>  Average GPA       : {course.avg}</h3>
+			        			<div> Professor         : {course.name_format1} </div>
 			        			<div> Course Department : {course.course_department} </div>
 			        			<div> Course NO         : {course.course_number} </div>
-					        
-					        	<div> </div>
 					        	<div> Rate My Professor :  
 					        		<a href = {course.rmp_link}> Click Here!</a>
 					        	</div>

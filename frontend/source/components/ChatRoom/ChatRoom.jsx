@@ -1,3 +1,5 @@
+/** @author Qinglin Chen
+**/
 import React from 'react'
 import {Container,Divider,Icon, Dropdown,Menu,Segment,Input,Label,Button} from 'semantic-ui-react';
 import SocketIOClient from 'socket.io-client'

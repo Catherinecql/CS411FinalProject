@@ -1,3 +1,5 @@
+/** @author Qinglin Chen
+**/
 import React, { Component } from 'react'
 import { Button,Segment,Grid,Input,Label} from 'semantic-ui-react'
 import {BrowserRouter as Router, Route, Link,browserHistory,Redirect} from 'react-router-dom';
@@ -211,7 +213,7 @@ class Personalized extends Component {
 	    }else if(value.value == 3){
 	    	const{addElective} = this.state
 	    	console.log(addElective)
-	    	let url = this.baseUrl + '/addelective';
+	    	let url = this.baseUrl + 'addelective';
 	    	let electiveInfo = {}
 	    	let newUserInfo = {}
 	    	newUserInfo["username"] =  userInfo.username;

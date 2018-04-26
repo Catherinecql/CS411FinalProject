@@ -1,3 +1,5 @@
+/** @author Qinglin Chen
+**/
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {Icon, Dropdown,Menu} from 'semantic-ui-react';
