@@ -118,16 +118,15 @@ class EZSection extends Component
   		console.log("Course_NO",Course_NO)
   		const input = department+Course_NO
   		console.log("input",input)
-  		// let base_url = "https://localhost:7002/"
   		let base_url = "https://mysterious-meadow-13337.herokuapp.com/getNextSemProfessors/"
   		let current_url = base_url + department + '/' + Course_NO
-  		//"https://mysterious-meadow-13337.herokuapp.com/getNextSemProfessors/"
   		
   		axios.get(current_url)
 			.then((response) =>
 				{
+					console.log("floats ?")
 					console.log(response.data[0]);
-					//new add:
+					console.log(response.data[0].avg);
 					this.setState
 					(
 						{
