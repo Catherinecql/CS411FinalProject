@@ -1,3 +1,7 @@
+/** 
+@author Jessye Nana Davies
+@author Qinglin Chen
+**/
 'use strict'
 
 var bcrypt = require('bcrypt')
