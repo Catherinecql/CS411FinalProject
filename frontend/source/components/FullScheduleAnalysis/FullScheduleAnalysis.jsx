@@ -36,7 +36,8 @@ class FullScheduleAnalysis extends Component {
                     let title = requiredCourse[i].title
 
                     if(title == 'CS242/126') {
-                    	if(!courses.includes('CS242') && !courses.includes('CS126')) {
+                    	if(!courses.includes('CS242/126')) {
+                            console.log("in not include 242 126")
 							left.push('CS242')
 							left.push('CS126')
                     	}
@@ -153,11 +154,14 @@ class FullScheduleAnalysis extends Component {
         	}
         }  
 
+        const hasCoursesLeft = (coursesLeft.length == 0)? false : true
+
         console.log(max_gpa)
 
         return(
             <div className="FullScheduleAnalysis">
                 <h1>Recommender</h1>
+                { hasCoursesLeft? (
                 <div className="TableRec">
 			    	<Table celled padded>
 			    		<Table.Header>
@@ -200,10 +204,13 @@ class FullScheduleAnalysis extends Component {
 						)
           				)}
         			</Table.Body>
-
-
  				</Table>
   				</div>
+                ) : (
+                    <div className="NoCourse">
+                        You're all set with required courses ! :)
+                    </div>
+                )}
             </div>
         )
     }
