@@ -1,3 +1,6 @@
+/** 
+@author Jessye Nana Davies
+**/
 import React, { Component } from 'react'
 import { Button, Segment, Table, Header, Rating, Label, Icon } from 'semantic-ui-react'
 import {BrowserRouter as Router, Route, Link,browserHistory,Redirect} from 'react-router-dom';
@@ -34,7 +37,7 @@ class FullScheduleAnalysis extends Component {
 	    		let courses = requiredCourseTaken.split(',')
 	    		for (let i = 0; i < requiredCourse.length; i++) {
                     let title = requiredCourse[i].title
-
+                    console.log("testing",title)
                     if(title == 'CS242/126') {
                     	if(!courses.includes('CS242/126')) {
                             console.log("in not include 242 126")

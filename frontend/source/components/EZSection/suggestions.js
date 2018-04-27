@@ -1,3 +1,6 @@
+/** 
+@author Christopher Kim
+**/
 const suggestions = [
   {
     "course code": "CS",

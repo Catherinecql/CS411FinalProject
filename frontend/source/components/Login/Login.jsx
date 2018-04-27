@@ -1,3 +1,6 @@
+/** 
+@author Qinglin Chen
+**/
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {BrowserRouter as Router, Route, Link,browserHistory,Redirect} from 'react-router-dom';
