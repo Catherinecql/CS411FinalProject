@@ -1,4 +1,5 @@
-/** @author Qinglin Chen
+/** 
+@author Qinglin Chen
 **/
 import React, { Component } from 'react'
 import {Header,Menu,Container,Segment,Card,Button,Icon,Input,Form, Message,Grid} from 'semantic-ui-react';

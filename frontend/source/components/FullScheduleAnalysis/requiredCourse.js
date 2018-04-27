@@ -1,3 +1,6 @@
+/** 
+@author Jessye Nana Davies
+**/
 const requiredCourse = [
   
   {

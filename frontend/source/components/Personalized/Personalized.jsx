@@ -1,4 +1,5 @@
-/** @author Qinglin Chen
+/** 
+@author Qinglin Chen
 **/
 import React, { Component } from 'react'
 import { Button,Segment,Grid,Input,Label} from 'semantic-ui-react'

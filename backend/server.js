@@ -421,12 +421,12 @@ app.get('/getAverageGPA/:course_department/:course_number/:professor', function 
 	var course_number = req.params.course_number;
 	var professor = req.params.professor;
 
-	var sql_select = "select AVG(CourseHistory.gpa) as avg ";
-	var sql_from = "FROM CourseHistory";
-	var sql_where = " WHERE CourseHistory.course_department = '"+course_department+"'";
-	var sql_where1 = " AND CourseHistory.course_number = '"+course_number+"'";
-	var sql_where2 = " AND CourseHistory.professor_name_format2 = '"+professor+"'";
-	var sql_groupby = " GROUP BY CourseHistory.professor_name_format2";
+	var sql_select = "select AVG(CourseHistory2.gpa) as avg ";
+	var sql_from = "FROM CourseHistory2";
+	var sql_where = " WHERE CourseHistory2.course_department = '"+course_department+"'";
+	var sql_where1 = " AND CourseHistory2.course_number = '"+course_number+"'";
+	var sql_where2 = " AND CourseHistory2.professor_name_format2 = '"+professor+"'";
+	var sql_groupby = " GROUP BY CourseHistory2.professor_name_format2";
 
 	var sql_query = sql_select + sql_from + sql_where + sql_where1 + sql_where2 + sql_groupby;
 
